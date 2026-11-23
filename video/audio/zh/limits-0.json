@@ -1,0 +1,6 @@
+{
+  "digest": "68ba979a887d898a5fe290d520ae8f27760166833b37ab8ee622e092a8dcde3e",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "模型没有考虑金属层、障碍、共享树、过孔和实际拥塞下的绕行。它只能给布局阶段一个快速反馈。",
+  "semantic_id": "limits-0"
+}

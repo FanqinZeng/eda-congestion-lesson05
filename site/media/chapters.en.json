@@ -1,0 +1,72 @@
+[
+  {
+    "id": "question",
+    "start": 0,
+    "title": "Where could a wire create a bottleneck?"
+  },
+  {
+    "id": "two-routes",
+    "start": 20.5,
+    "title": "Two possible bends, not two simultaneous wires"
+  },
+  {
+    "id": "bend",
+    "start": 39.56666666666666,
+    "title": "A bend is one visit"
+  },
+  {
+    "id": "endpoints",
+    "start": 60.666666666666664,
+    "title": "Endpoints belong to both candidates"
+  },
+  {
+    "id": "sum",
+    "start": 81.86666666666666,
+    "title": "Turn routes into a demand matrix"
+  },
+  {
+    "id": "capacity",
+    "start": 103.9,
+    "title": "Capacity turns demand into overflow"
+  },
+  {
+    "id": "rudy",
+    "start": 126.0,
+    "title": "Same mass, different spatial distribution"
+  },
+  {
+    "id": "units",
+    "start": 147.96666666666667,
+    "title": "Different units cannot directly rank models"
+  },
+  {
+    "id": "aligned",
+    "start": 169.0666666666667,
+    "title": "Aligned pins make the candidates coincide"
+  },
+  {
+    "id": "same-cell",
+    "start": 190.66666666666669,
+    "title": "The same-cell case exposes the unit"
+  },
+  {
+    "id": "multi-pin",
+    "start": 213.30000000000004,
+    "title": "Multi-pin nets use a center-star approximation"
+  },
+  {
+    "id": "source-convention",
+    "start": 235.1666666666667,
+    "title": "Reproduce the source without hiding its convention"
+  },
+  {
+    "id": "limits",
+    "start": 258.6333333333334,
+    "title": "A heat map is not a routed solution"
+  },
+  {
+    "id": "try-it",
+    "start": 280.70000000000005,
+    "title": "Now change one number yourself"
+  }
+]

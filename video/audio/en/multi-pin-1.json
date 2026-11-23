@@ -1,0 +1,6 @@
+{
+  "digest": "39f376dc260ab2ce843c212fb4fecefcf433f4d97f500934e7d12a8359cf3561",
+  "voice": "en-US-JennyNeural",
+  "text": "We retain the source convention of weight one over p per spoke. This is an explicit approximation, not a minimum Steiner tree or an obstacle-avoiding router.",
+  "semantic_id": "multi-pin-1"
+}

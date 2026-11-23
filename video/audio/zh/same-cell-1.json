@@ -1,0 +1,6 @@
+{
+  "digest": "864309c2e5f2b03a4669c637f31fa8f1fff6dd1f991f9065556446860a9e6840",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "而真实坐标完全重合时，半周长可以是零。这不是计算矛盾，而是提醒我们：占用、线长和金属轨数并不相同。",
+  "semantic_id": "same-cell-1"
+}

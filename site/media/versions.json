@@ -1,0 +1,316 @@
+{
+  "zh": {
+    "label": "中文",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "video": "media/lesson.zh.mp4",
+    "poster": "media/poster.jpg",
+    "transcript": "reading/#transcript-zh",
+    "trackLabel": "中文 + English",
+    "captionTracks": {
+      "bilingual": "media/lesson.zh.bilingual.vtt",
+      "zh": "media/lesson.zh.zh.vtt",
+      "en": "media/lesson.zh.en.vtt"
+    },
+    "chapters": [
+      {
+        "id": "question",
+        "start": 0,
+        "title": "还没有布线，哪里可能会堵？"
+      },
+      {
+        "id": "two-routes",
+        "start": 20.5,
+        "title": "两种拐弯，不是两根线"
+      },
+      {
+        "id": "bend",
+        "start": 39.56666666666666,
+        "title": "转角：一次经过，只计一次"
+      },
+      {
+        "id": "endpoints",
+        "start": 60.666666666666664,
+        "title": "端点：两个候选的共同部分"
+      },
+      {
+        "id": "sum",
+        "start": 81.86666666666666,
+        "title": "把路径变成需求矩阵"
+      },
+      {
+        "id": "capacity",
+        "start": 103.9,
+        "title": "先有容量，才有“超额”"
+      },
+      {
+        "id": "rudy",
+        "start": 126.0,
+        "title": "同一总量，不同空间分布"
+      },
+      {
+        "id": "units",
+        "start": 147.96666666666667,
+        "title": "单位不同，不能直接排名"
+      },
+      {
+        "id": "aligned",
+        "start": 169.0666666666667,
+        "title": "共线时，两种路线重合"
+      },
+      {
+        "id": "same-cell",
+        "start": 190.66666666666669,
+        "title": "同格：暴露模型的单位"
+      },
+      {
+        "id": "multi-pin",
+        "start": 213.30000000000004,
+        "title": "多引脚：中心星形近似"
+      },
+      {
+        "id": "source-convention",
+        "start": 235.1666666666667,
+        "title": "可复现，也要解释源码差异"
+      },
+      {
+        "id": "limits",
+        "start": 258.6333333333334,
+        "title": "一张热图，不是一份布线解"
+      },
+      {
+        "id": "try-it",
+        "start": 280.70000000000005,
+        "title": "现在，自己让一个数字改变"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "question",
+        "start": 0,
+        "end": 20.5
+      },
+      {
+        "id": "two-routes",
+        "start": 20.5,
+        "end": 39.56666666666666
+      },
+      {
+        "id": "bend",
+        "start": 39.56666666666666,
+        "end": 60.666666666666664
+      },
+      {
+        "id": "endpoints",
+        "start": 60.666666666666664,
+        "end": 81.86666666666666
+      },
+      {
+        "id": "sum",
+        "start": 81.86666666666666,
+        "end": 103.9
+      },
+      {
+        "id": "capacity",
+        "start": 103.9,
+        "end": 126.0
+      },
+      {
+        "id": "rudy",
+        "start": 126.0,
+        "end": 147.96666666666667
+      },
+      {
+        "id": "units",
+        "start": 147.96666666666667,
+        "end": 169.0666666666667
+      },
+      {
+        "id": "aligned",
+        "start": 169.0666666666667,
+        "end": 190.66666666666669
+      },
+      {
+        "id": "same-cell",
+        "start": 190.66666666666669,
+        "end": 213.30000000000004
+      },
+      {
+        "id": "multi-pin",
+        "start": 213.30000000000004,
+        "end": 235.1666666666667
+      },
+      {
+        "id": "source-convention",
+        "start": 235.1666666666667,
+        "end": 258.6333333333334
+      },
+      {
+        "id": "limits",
+        "start": 258.6333333333334,
+        "end": 280.70000000000005
+      },
+      {
+        "id": "try-it",
+        "start": 280.70000000000005,
+        "end": 303.6666666666667
+      }
+    ]
+  },
+  "en": {
+    "label": "English",
+    "voice": "en-US-JennyNeural",
+    "video": "media/lesson.en.mp4",
+    "poster": "media/poster.en.jpg",
+    "transcript": "reading/#transcript-en",
+    "trackLabel": "中文 + English",
+    "captionTracks": {
+      "bilingual": "media/lesson.en.bilingual.vtt",
+      "zh": "media/lesson.en.zh.vtt",
+      "en": "media/lesson.en.en.vtt"
+    },
+    "chapters": [
+      {
+        "id": "question",
+        "start": 0,
+        "title": "Where could a wire create a bottleneck?"
+      },
+      {
+        "id": "two-routes",
+        "start": 20.5,
+        "title": "Two possible bends, not two simultaneous wires"
+      },
+      {
+        "id": "bend",
+        "start": 39.56666666666666,
+        "title": "A bend is one visit"
+      },
+      {
+        "id": "endpoints",
+        "start": 60.666666666666664,
+        "title": "Endpoints belong to both candidates"
+      },
+      {
+        "id": "sum",
+        "start": 81.86666666666666,
+        "title": "Turn routes into a demand matrix"
+      },
+      {
+        "id": "capacity",
+        "start": 103.9,
+        "title": "Capacity turns demand into overflow"
+      },
+      {
+        "id": "rudy",
+        "start": 126.0,
+        "title": "Same mass, different spatial distribution"
+      },
+      {
+        "id": "units",
+        "start": 147.96666666666667,
+        "title": "Different units cannot directly rank models"
+      },
+      {
+        "id": "aligned",
+        "start": 169.0666666666667,
+        "title": "Aligned pins make the candidates coincide"
+      },
+      {
+        "id": "same-cell",
+        "start": 190.66666666666669,
+        "title": "The same-cell case exposes the unit"
+      },
+      {
+        "id": "multi-pin",
+        "start": 213.30000000000004,
+        "title": "Multi-pin nets use a center-star approximation"
+      },
+      {
+        "id": "source-convention",
+        "start": 235.1666666666667,
+        "title": "Reproduce the source without hiding its convention"
+      },
+      {
+        "id": "limits",
+        "start": 258.6333333333334,
+        "title": "A heat map is not a routed solution"
+      },
+      {
+        "id": "try-it",
+        "start": 280.70000000000005,
+        "title": "Now change one number yourself"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "question",
+        "start": 0,
+        "end": 20.5
+      },
+      {
+        "id": "two-routes",
+        "start": 20.5,
+        "end": 39.56666666666666
+      },
+      {
+        "id": "bend",
+        "start": 39.56666666666666,
+        "end": 60.666666666666664
+      },
+      {
+        "id": "endpoints",
+        "start": 60.666666666666664,
+        "end": 81.86666666666666
+      },
+      {
+        "id": "sum",
+        "start": 81.86666666666666,
+        "end": 103.9
+      },
+      {
+        "id": "capacity",
+        "start": 103.9,
+        "end": 126.0
+      },
+      {
+        "id": "rudy",
+        "start": 126.0,
+        "end": 147.96666666666667
+      },
+      {
+        "id": "units",
+        "start": 147.96666666666667,
+        "end": 169.0666666666667
+      },
+      {
+        "id": "aligned",
+        "start": 169.0666666666667,
+        "end": 190.66666666666669
+      },
+      {
+        "id": "same-cell",
+        "start": 190.66666666666669,
+        "end": 213.30000000000004
+      },
+      {
+        "id": "multi-pin",
+        "start": 213.30000000000004,
+        "end": 235.1666666666667
+      },
+      {
+        "id": "source-convention",
+        "start": 235.1666666666667,
+        "end": 258.6333333333334
+      },
+      {
+        "id": "limits",
+        "start": 258.6333333333334,
+        "end": 280.70000000000005
+      },
+      {
+        "id": "try-it",
+        "start": 280.70000000000005,
+        "end": 303.6666666666667
+      }
+    ]
+  }
+}

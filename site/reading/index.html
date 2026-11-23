@@ -1,0 +1,504 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>学习资料 · Congestion 05</title><link rel="stylesheet" href="../assets/style.css"></head><body><header><div class="wrap top"><a class="brand" id="back" href="../">Congestion 05</a><label class="lang-label">Language / 语言 <select id="language"><option value="zh">中文</option><option value="en">English</option></select></label></div></header><main class="wrap reading section"><p class="eyebrow">READ / UNDERSTAND / REPRODUCE</p><h1 data-zh="在这里，把每个约定读清楚。" data-en="Read every convention, right here.">在这里，把每个约定读清楚。</h1><p data-zh="完整资料可以直接阅读和复制。原文件下载是可选补充。" data-en="Read and copy the complete materials online. Original downloads are optional.">完整资料可以直接阅读和复制。原文件下载是可选补充。</p><nav class="toc" aria-label="Study materials"><a href="#notes" data-zh="完整讲义" data-en="Full notes">完整讲义</a><a href="#reference" data-zh="Python参考" data-en="Python reference">Python参考</a><a href="#exercise" data-zh="练习代码" data-en="Exercise">练习代码</a><a href="#data" data-zh="样例数据" data-en="Fixtures">样例数据</a><a href="#transcript-zh">中文文字稿</a><a href="#transcript-en">English transcript</a><a href="#reproduce" data-zh="复现" data-en="Reproduce">复现</a></nav><section id="notes"><article data-reading-lang="zh"><h2>概率布线需求：一张网，两种可能</h2>
+<h3>学习目标与问题边界</h3>
+<p>输入是芯片尺寸、GCell网格、引脚坐标、net列表和每格容量；输出是逐格需求、拥塞比和溢出。我们在真正布线之前提出一个快速估计，不寻找最优路径，也不输出可制造的金属线。</p>
+<p>学习后应能画出两条L候选，解释转角和端点，手算一个矩阵，比较等总量的RUDY分布，并指出模型遗漏的物理因素。需要二维坐标和简单概率知识，不要求先会写路由器。</p>
+<h3>三个容易混淆的名词</h3>
+<p>GCell是芯片上的一个粗网格区域；pin是需要连接的引脚；net是一组需要互连的pin。图中的折线连接GCell中心，只表示经过哪些格子，不是精确的物理导线路径。</p>
+<p>需求D表示本课定义的期望GCell占用，含端点；容量C必须使用同一toy单位。拥塞比是D/C，只有D&gt;C才超额。溢出为max(0,D-C)。D=C表示恰好满载，不能把它标成正溢出。</p>
+<h3>完整路径，先去重再加概率</h3>
+<p>两pin net有两个候选：HV先横后竖，VH先竖后横，各取概率1/2。把一条候选的两条腿拼接后，先将重复格子去掉，再向每个格子加0.5。转角属于两条腿，但只属于这条完整候选一次。</p>
+<p>两个不同候选的贡献继续相加。共享端点因此得到0.5+0.5=1；只被一个候选经过的格子得到0.5；不在任何候选上的格子为0。这是期望的线性叠加，不要求不同net之间相互独立才能计算总期望。</p>
+<pre tabindex="0"><code>for each net:
+    for each star edge (a,b,weight):
+        for order in [HV,VH]:
+            cells = unique(complete_L_path(a,b,order))
+            for g in cells:
+                D[g] += 0.5 * weight</code></pre>
+<h3>黄金例：逐格核对7，而不是凭颜色判断</h3>
+<p>chip为12×12，GCell为4×4，每格3×3。A=(1,1)，B=(10,10)，映射到(0,0)和(3,3)。坐标原点左下，y向上。两条候选各7个不同格子，期望总占用7×0.5+7×0.5=7。</p>
+<pre tabindex="0"><code>y=3    0.5  0.5  0.5  1.0
+y=2    0.5  0.0  0.0  0.5
+y=1    0.5  0.0  0.0  0.5
+y=0    1.0  0.5  0.5  0.5
+       x=0  x=1  x=2  x=3</code></pre>
+<p>程序使用matrix[x][y]，打印时按y从大到小输出，不要把嵌套数组的外层误认为画面从上到下的行。内部坐标恰好落在格子边界时用floor选择右边或上边；恰好落在chip最大边界时钳制到最后一格。</p>
+<h3>容量是一个控制变量</h3>
+<p>C=0.6时，只有两个端点的需求1超额，每个overflow=0.4，总overflow=0.8，热点数2。其他边界格需求0.5，没有超额。将C降为0.4时，需求矩阵不变，更多格子变成热点。</p>
+<p>实验时只改一项：先固定坐标修改容量，再恢复容量移动一个pin。检查具体格子的D、C、D/C和overflow，而不是只看色阶。本站两幅对比图共享色阶，暖金边框代表严格超额，白框代表你选中的格子。</p>
+<h3>与RUDY比较前，先对齐单位</h3>
+<p>原始toy RUDY把net的半周长HPWL均摊到包围盒覆盖的格子。黄金例HPWL=9+9=18，共16格，所以原始值每格18/16=1.125。这里的总量18来自长度，不能直接与占用总量7比较绝对overflow。</p>
+<p>本站默认逐net匹配RUDY总质量到该net的L需求总质量，再比较空间分布。黄金例每格7/16=0.4375；C=0.6时它没有热点，L模型却有两个端点热点。不能据此断言哪种模型更准确：尚未有真实路由解作为真值。可以断言RUDY涂满包围盒，而L模型集中在候选走廊。</p>
+<p>同格且坐标完全重合时，HPWL=0但默认占用为1。匹配模式仍将L模型的质量均摊到该net的包围盒，因此不会除以零；原始RUDY保留0。这一反例展示的是模型单位差异。</p>
+<h3>多pin中心星形的假设</h3>
+<p>对p个pin，找到物理坐标包围盒中心，建立中心到每个pin的辐条。每条辐条用相同的两L方法，且权重为1/p，这是沿用上游的缩放约定。中心是虚拟点，可能不在任何pin上。</p>
+<p>三pin预设A=(1,1)、B=(10,1)、C=(10,10)，中心(5.5,5.5)，位于GCell(1,1)。三条辐条的每条L分别访问3、4、5格，乘各自1/3权重后，需求总和为(3+4+5)/3=4。它不是最小Steiner树，没有合并共享分支，也不保证避障。</p>
+<h3>共线、同格与重复计数</h3>
+<p>共线预设中，两条候选都访问同一行的4格，每格得到0.5+0.5=1，总量4。不能把两个相同的候选删除一个，否则把总概率降成1/2。</p>
+<p>同格预设中，每条候选去重后只剩一个格子，总占用1。含端点的占用不是导线长度；真实路由器可能采用不同的端点或边容量约定，不能把本课toy数值直接当作轨数。</p>
+<h3>与固定上游helper的区别</h3>
+<p>教材讲稿强调两个L各半概率和避免转角重复，但固定提交的common/solvers.py逐条leg均摊0.5。四条leg总质量为2；零长leg仍向一个格子加量；角点会收到两条leg的份额。多pin的1/p缩放与本站一致。</p>
+<p>本站保留“上游helper兼容”开关，以便精确复现和对照；默认去重路径则是明确标注的教学修正。黄金例在兼容模式下每个角点0.25，其余边界0.125，总量2。这个值不是每格通过概率。来源预检和对照数据保存在仓库docs/research，不能混用模式的答案。</p>
+<h3>真正运行Python</h3>
+<p>Python交互台在独立Worker中运行CPython，首次按需载入本地Pyodide。可以编辑全部代码、立即运行、开启实时模式、查看标准输出与异常。每次运行使用新的变量空间；停止或5秒超时会重启解释器，保留编辑内容与已有输出。</p>
+<p>参考例使用独立Python实现同一约定；练习要求补完路径去重和累加两个函数，附5条手算检查。只通过输出某个常数不能验证算法，应再试共线、同格、边界坐标与三pin。代码在当前浏览器运行，没有提交到服务器执行。</p>
+<h3>复杂度与真实局限</h3>
+<p>本实现显式遍历每条候选经过的格子；时间与所有候选访问格子的总数成正比，保存需求矩阵需要nx×ny空间。为教学保留了逐候选trace，记录量还会随候选数增加；这不是大芯片实现的内存优化方案。</p>
+<p>没有金属层、过孔、障碍、共享树、路由器选择偏好、时序或拥塞绕行。两L各半是一个假设，不是从实际芯片测得的概率分布。用它做早期布局反馈，再用更细的路由器验证，不把一张漂亮热图当作布线完成证明。</p>
+<h3>继续实验</h3>
+<p>先预测转角0.5、总量7与总溢出0.8，再提交练习。修改一个坐标、改成共线、降低容量、切换原始RUDY单位；每次写下一句因果解释。最后打开教师4×2六net预设，对比默认修正和helper兼容，明确记录模式与容量。</p>
+<h3>来源与许可</h3>
+<p>主题来自Yongfu Li的eda-learning，固定提交003bcd49e3794e6cfd2680181cdbd347d673ad07，module02-03-probabilistic-demand，对应issue #43。路径去重修正、等总量RUDY比较、交互网页和新动画由FanqinZeng制作。参考设计与第三方运行时署名见主页及THIRD_PARTY_NOTICES.md。新代码MIT，新教材CC BY 4.0，第三方组件遵循各自许可。</p></article><article data-reading-lang="en" hidden><h2>Probabilistic Demand: One Net, Two Possible Routes</h2>
+<h3>Goals and problem boundary</h3>
+<p>Inputs are chip dimensions, a GCell grid, pin positions, nets and capacity. Outputs are per-cell demand, congestion ratios and overflow. This is an early estimate before routing, not an optimizer or a manufacturable metal layout.</p>
+<p>You will trace both L candidates, distinguish bends from endpoints, calculate a matrix, compare matched-mass RUDY distributions and identify missing physical factors. Basic coordinates and probability are sufficient.</p>
+<h3>Terms and units</h3>
+<p>A GCell is a coarse chip region, a pin is a connection terminal, and a net groups pins requiring connection. Diagram segments join GCell centers to show visited cells; they are not exact physical wires.</p>
+<p>Demand D is endpoint-inclusive expected GCell occupancy in this lesson. Capacity C must use that same toy unit. Congestion is D/C, oversubscription means D&gt;C, and overflow is max(0,D-C). Equality means exactly full, with zero overflow.</p>
+<h3>Deduplicate a complete path before depositing probability</h3>
+<p>A two-pin net has two candidates: horizontal–vertical and vertical–horizontal, each with probability 1/2. Concatenate a candidate’s two legs, remove repeated cells, and add 0.5 to each remaining cell. A bend belongs to both legs but is visited once by that complete candidate.</p>
+<p>Contributions from distinct candidates still add. Shared endpoints receive 0.5+0.5=1; cells on one candidate receive 0.5; cells on neither receive zero. Linearity of expectation lets us sum net contributions without requiring independent nets merely to compute that expectation.</p>
+<pre tabindex="0"><code>for each net:
+    for each star edge (a,b,weight):
+        for order in [HV,VH]:
+            cells = unique(complete_L_path(a,b,order))
+            for g in cells:
+                D[g] += 0.5 * weight</code></pre>
+<h3>Golden example: verify the total seven</h3>
+<p>The chip is 12×12, with a 4×4 grid of 3×3 cells. Pins A=(1,1) and B=(10,10) map to cells (0,0) and (3,3). The origin is at the bottom left and y increases upward. Each candidate visits seven distinct cells, giving mass 7×0.5+7×0.5=7.</p>
+<pre tabindex="0"><code>y=3    0.5  0.5  0.5  1.0
+y=2    0.5  0.0  0.0  0.5
+y=1    0.5  0.0  0.0  0.5
+y=0    1.0  0.5  0.5  0.5
+       x=0  x=1  x=2  x=3</code></pre>
+<p>Code stores matrix[x][y]. Printing reverses y, so do not confuse the outer array with top-to-bottom screen rows. At internal grid boundaries, floor selects the cell on the right or above. Positions exactly at the chip’s maximum boundary are clamped to the final cell.</p>
+<h3>Treat capacity as a controlled variable</h3>
+<p>At capacity 0.6, only the two endpoints with demand 1 are oversubscribed. Each contributes overflow 0.4, giving total 0.8 and hotspot count two. Other boundary cells have demand 0.5 and are not oversubscribed. Lowering capacity to 0.4 changes the hotspot set without changing demand.</p>
+<p>Change one factor at a time: keep coordinates fixed while changing capacity, then restore capacity before moving a pin. Inspect a cell’s exact D, C, D/C and overflow. Both maps share a color scale; gold outlines denote strict oversubscription, while a white outline denotes selection.</p>
+<h3>Match units before comparing RUDY</h3>
+<p>Raw toy RUDY distributes a net’s half-perimeter wirelength over its bounding-box cells. This example has HPWL 18 across 16 cells, giving 1.125 per cell. Length-derived mass 18 cannot directly rank against occupancy-derived mass seven through absolute overflow.</p>
+<p>By default, we match each net’s RUDY mass to its L-model mass before comparing spatial distributions. The example gives 7/16=0.4375 per cell. At capacity 0.6 RUDY has no hotspot while the L estimate has two. Neither result proves superior accuracy without a real routed reference. It does show that RUDY fills the box while the L model concentrates demand in candidate corridors.</p>
+<p>Coincident physical positions can have HPWL zero but occupancy one. Matching distributes the L model’s mass over that net’s box directly, so it never divides by zero; raw RUDY retains zero. This is a useful counterexample about units.</p>
+<h3>Multi-pin center-star approximation</h3>
+<p>For p pins, find the physical bounding-box center and connect it to every pin. Each spoke uses the same two-L construction with weight 1/p, retaining the upstream scaling convention. The center is virtual and need not be a pin.</p>
+<p>The three-pin preset uses A=(1,1), B=(10,1), C=(10,10). Center (5.5,5.5) lies in GCell (1,1). Its spokes visit three, four and five cells per candidate, giving total mass (3+4+5)/3=4. This is not a minimum Steiner tree; it does not merge shared branches or guarantee obstacle avoidance.</p>
+<h3>Aligned and same-cell cases</h3>
+<p>For aligned pins, both candidates visit the same four cells. Every cell receives two half contributions, giving demand one and total four. Removing a coincident candidate would incorrectly reduce the total probability to one half.</p>
+<p>In the same-cell preset, each deduplicated candidate contains one cell and total occupancy remains one. Endpoint-inclusive occupancy is not wirelength. A physical router may use edge capacities or different terminal conventions; toy values are not track counts.</p>
+<h3>Difference from the pinned source helper</h3>
+<p>The transcript describes half-probability L candidates and avoiding duplicate bends. However, the pinned common/solvers.py spreads 0.5 over each leg separately. Four legs have total mass two; zero-length legs still deposit mass and bends receive both legs’ shares. Its 1/p multi-pin scaling is retained here.</p>
+<p>An explicitly labeled compatibility mode reproduces the helper. The default complete-path deduplication is an authored teaching correction. In the diagonal helper case, corners have 0.25, other boundary cells 0.125 and total mass two. Those numbers are not per-cell visit probabilities. Audit records and source comparisons are in docs/research; never mix answers from different conventions.</p>
+<h3>Run real Python</h3>
+<p>The workspace runs CPython inside a separate Worker, loading bundled Pyodide on demand. Edit all the code, run it immediately or use live mode, inspect output and exceptions, and stop a run. Each execution has fresh variables. Stop or the five-second timeout restarts the interpreter while keeping code and existing output.</p>
+<p>The reference independently implements the same conventions. The exercise asks you to complete path deduplication and demand accumulation, with five hand-checkable assertions. Printing a constant is not evidence of a working algorithm: also test aligned pins, same-cell pins, boundaries and three-pin stars. Code executes in this browser, not on a server.</p>
+<h3>Complexity and limits</h3>
+<p>The implementation explicitly visits candidate cells, so time scales with the total visited cells across candidates. The demand matrix requires nx×ny space. Teaching traces retain additional intermediate data and are not a memory-optimized large-chip design.</p>
+<p>There are no metal layers, vias, obstacles, shared trees, timing objectives or congestion detours. Equal candidate probability is an assumption, not an empirical routing distribution. Use the model for early placement feedback and validate with a more detailed router. A heat map is not proof of completed routing.</p>
+<h3>Continue experimenting</h3>
+<p>Predict bend 0.5, total seven and overflow 0.8 before checking your answers. Move a pin, align the pins, lower capacity and inspect raw RUDY units, explaining one cause each time. Finally load the teacher’s 4×2 six-net fixture and compare the corrected default with source compatibility, recording convention and capacity.</p>
+<h3>Provenance</h3>
+<p>The lesson is based on Yongfu Li’s eda-learning, commit 003bcd49e3794e6cfd2680181cdbd347d673ad07, module02-03-probabilistic-demand and issue #43. Path deduplication, matched-mass comparison, the interactive site and new animation are authored by FanqinZeng. Credits and component licenses are on the home page and THIRD_PARTY_NOTICES.md. New code is MIT; new teaching content is CC BY 4.0; third-party components retain their licenses.</p></article></section><section id="reference"><h2 data-zh="独立Python参考" data-en="Independent Python reference">独立Python参考</h2><div class="actions"><button data-copy="code-reference" data-zh="复制代码 / 数据" data-en="Copy code / data">复制代码 / 数据</button><a href="../downloads/reference.py" download data-zh="可选：下载原文件" data-en="Optional: download original">可选：下载原文件</a><a id="python-reference" href="../python/" data-zh="在浏览器中运行Python" data-en="Run Python in this browser">在浏览器中运行Python</a></div><pre tabindex="0"><code id="code-reference">&quot;&quot;&quot;Independent reference: x-major GCell matrices, path occupancy or upstream leg toy.
+
+Path mode is the authored correction to the transcript; it is not the upstream
+helper. RUDY matched uses the same total mass per net for spatial comparison.
+&quot;&quot;&quot;
+import json,math,sys
+
+def estimate(data, mode=&#x27;path&#x27;, capacity=None, positions=None):
+    positions = data[&#x27;placement&#x27;] if positions is None else positions
+    capacity = data[&#x27;capacity&#x27;] if capacity is None else capacity
+    if not math.isfinite(capacity) or capacity &lt;= 0: raise ValueError(&#x27;capacity&#x27;)
+    if mode not in (&#x27;path&#x27;,&#x27;upstream&#x27;): raise ValueError(&#x27;mode&#x27;)
+    grid=data[&#x27;gcell&#x27;]; nx,ny=grid[&#x27;nx&#x27;],grid[&#x27;ny&#x27;];cw,ch=grid[&#x27;cellW&#x27;],grid[&#x27;cellH&#x27;]
+    for p in positions.values():
+        if not all(math.isfinite(p[k]) and 0&lt;=p[k]&lt;=data[&#x27;chip&#x27;][bound] for k,bound in [(&#x27;x&#x27;,&#x27;W&#x27;),(&#x27;y&#x27;,&#x27;H&#x27;)]):raise ValueError(&#x27;coordinate&#x27;)
+    def tile(p):return min(nx-1,int(p[&#x27;x&#x27;]//cw)),min(ny-1,int(p[&#x27;y&#x27;]//ch))
+    def grid0():return [[0.0 for _ in range(ny)] for _ in range(nx)]
+    def walk(a,b):
+        steps=max(abs(a[0]-b[0]),abs(a[1]-b[1]))
+        if steps==0:return [a]
+        dx=(b[0]-a[0])//steps;dy=(b[1]-a[1])//steps
+        return [(a[0]+t*dx,a[1]+t*dy) for t in range(steps+1)]
+    demand,raw,matched=grid0(),grid0(),grid0()
+    for net in data[&#x27;nets&#x27;]:
+        if len(net)&lt;2 or len(set(net))!=len(net) or any(k not in positions for k in net):raise ValueError(&#x27;pin&#x27;)
+        pins=[positions[k] for k in net];xmin=min(p[&#x27;x&#x27;] for p in pins);xmax=max(p[&#x27;x&#x27;] for p in pins);ymin=min(p[&#x27;y&#x27;] for p in pins);ymax=max(p[&#x27;y&#x27;] for p in pins)
+        center={&#x27;x&#x27;:(xmin+xmax)/2,&#x27;y&#x27;:(ymin+ymax)/2}
+        spokes=[(pins[0],pins[1],1)] if len(net)==2 else [(center,p,1/len(net)) for p in pins]
+        mass=0
+        for a,b,weight in spokes:
+            start,end=tile(a),tile(b)
+            for turn in [(end[0],start[1]),(start[0],end[1])]:
+                legs=[walk(start,turn),walk(turn,end)]
+                if mode==&#x27;path&#x27;:
+                    cells=set(legs[0]+legs[1]); contributions=[(cell,.5*weight) for cell in sorted(cells)]
+                else:contributions=[(cell,.5*weight/len(leg)) for leg in legs for cell in leg]
+                for (i,j),value in contributions:demand[i][j]+=value;mass+=value
+        a,b=tile({&#x27;x&#x27;:xmin,&#x27;y&#x27;:ymin}),tile({&#x27;x&#x27;:xmax,&#x27;y&#x27;:ymax})
+        box=[(i,j) for i in range(a[0],b[0]+1) for j in range(a[1],b[1]+1)]
+        for i,j in box:raw[i][j]+=(xmax-xmin+ymax-ymin)/len(box);matched[i][j]+=mass/len(box)
+    overflow=[max(0,v-capacity) for col in demand for v in col]
+    return {&#x27;demand&#x27;:demand,&#x27;rudyRaw&#x27;:raw,&#x27;rudyMatched&#x27;:matched,&#x27;metrics&#x27;:{&#x27;total&#x27;:sum(overflow),&#x27;max&#x27;:max(overflow,default=0),&#x27;count&#x27;:sum(v&gt;1e-12 for v in overflow)}}
+
+if __name__==&#x27;__main__&#x27;:
+    records=json.load(sys.stdin)
+    print(json.dumps([estimate(item[&#x27;data&#x27;],item.get(&#x27;mode&#x27;,&#x27;path&#x27;)) for item in records]))
+</code></pre></section><section id="exercise"><h2 data-zh="自己补全的练习" data-en="Complete the exercise">自己补全的练习</h2><div class="actions"><button data-copy="code-exercise" data-zh="复制代码 / 数据" data-en="Copy code / data">复制代码 / 数据</button><a href="../downloads/exercise.py" download data-zh="可选：下载原文件" data-en="Optional: download original">可选：下载原文件</a><a id="python-exercise" href="../python/" data-zh="在浏览器中运行Python" data-en="Run Python in this browser">在浏览器中运行Python</a></div><pre tabindex="0"><code id="code-exercise"># Complete the two functions; each candidate path must count its bend once.
+# 完成两个函数：每条候选路径的转角只计一次。
+def path_cells(a, b, order=&quot;HV&quot;):
+    # a,b are integer GCell tuples. Include endpoints. / 包含端点。
+    raise NotImplementedError(&quot;Implement the complete, deduplicated path&quot;)
+
+def demand(a, b, nx=4, ny=4):
+    result = [[0.0 for _ in range(ny)] for _ in range(nx)]
+    # Add 0.5 for each cell on each candidate. / 每条候选每格加0.5。
+    raise NotImplementedError(&quot;Accumulate both candidates&quot;)
+
+d=demand((0,0),(3,3))
+assert len(path_cells((0,0),(3,3))) == 7
+assert d[3][0] == 0.5, &quot;Do not count the bend twice&quot;
+assert d[0][0] == 1, &quot;Both candidates visit the endpoint&quot;
+assert sum(map(sum,d)) == 7
+assert sum(map(sum,demand((0,0),(0,0)))) == 1
+print(&quot;5 checks passed / 5项检查通过&quot;)
+</code></pre></section><section id="data"><h2 data-zh="可复现情境数据" data-en="Reproducible fixtures">可复现情境数据</h2><div class="actions"><button data-copy="code-data" data-zh="复制代码 / 数据" data-en="Copy code / data">复制代码 / 数据</button><a href="../downloads/examples.json" download data-zh="可选：下载原文件" data-en="Optional: download original">可选：下载原文件</a><a id="python-data" href="../python/" data-zh="在浏览器中运行Python" data-en="Run Python in this browser">在浏览器中运行Python</a></div><pre tabindex="0"><code id="code-data">{
+  &quot;diagonal&quot;: {
+    &quot;chip&quot;: {
+      &quot;W&quot;: 12,
+      &quot;H&quot;: 12
+    },
+    &quot;gcell&quot;: {
+      &quot;nx&quot;: 4,
+      &quot;ny&quot;: 4,
+      &quot;cellW&quot;: 3,
+      &quot;cellH&quot;: 3
+    },
+    &quot;capacity&quot;: 0.6,
+    &quot;nets&quot;: [
+      [
+        &quot;A&quot;,
+        &quot;B&quot;
+      ]
+    ],
+    &quot;placement&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 10,
+        &quot;y&quot;: 10
+      }
+    }
+  },
+  &quot;straight&quot;: {
+    &quot;chip&quot;: {
+      &quot;W&quot;: 12,
+      &quot;H&quot;: 12
+    },
+    &quot;gcell&quot;: {
+      &quot;nx&quot;: 4,
+      &quot;ny&quot;: 4,
+      &quot;cellW&quot;: 3,
+      &quot;cellH&quot;: 3
+    },
+    &quot;capacity&quot;: 0.6,
+    &quot;nets&quot;: [
+      [
+        &quot;A&quot;,
+        &quot;B&quot;
+      ]
+    ],
+    &quot;placement&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 10,
+        &quot;y&quot;: 1
+      }
+    }
+  },
+  &quot;same&quot;: {
+    &quot;chip&quot;: {
+      &quot;W&quot;: 12,
+      &quot;H&quot;: 12
+    },
+    &quot;gcell&quot;: {
+      &quot;nx&quot;: 4,
+      &quot;ny&quot;: 4,
+      &quot;cellW&quot;: 3,
+      &quot;cellH&quot;: 3
+    },
+    &quot;capacity&quot;: 0.6,
+    &quot;nets&quot;: [
+      [
+        &quot;A&quot;,
+        &quot;B&quot;
+      ]
+    ],
+    &quot;placement&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      }
+    }
+  },
+  &quot;multi&quot;: {
+    &quot;chip&quot;: {
+      &quot;W&quot;: 12,
+      &quot;H&quot;: 12
+    },
+    &quot;gcell&quot;: {
+      &quot;nx&quot;: 4,
+      &quot;ny&quot;: 4,
+      &quot;cellW&quot;: 3,
+      &quot;cellH&quot;: 3
+    },
+    &quot;capacity&quot;: 0.6,
+    &quot;nets&quot;: [
+      [
+        &quot;A&quot;,
+        &quot;B&quot;,
+        &quot;C&quot;
+      ]
+    ],
+    &quot;placement&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 10,
+        &quot;y&quot;: 1
+      },
+      &quot;C&quot;: {
+        &quot;x&quot;: 10,
+        &quot;y&quot;: 10
+      }
+    }
+  },
+  &quot;teacher&quot;: {
+    &quot;chip&quot;: {
+      &quot;W&quot;: 12,
+      &quot;H&quot;: 8
+    },
+    &quot;gcell&quot;: {
+      &quot;nx&quot;: 4,
+      &quot;ny&quot;: 2,
+      &quot;cellW&quot;: 3,
+      &quot;cellH&quot;: 4
+    },
+    &quot;capacity&quot;: 2,
+    &quot;cells&quot;: [
+      {
+        &quot;id&quot;: &quot;A&quot;,
+        &quot;width&quot;: 2,
+        &quot;height&quot;: 1
+      },
+      {
+        &quot;id&quot;: &quot;B&quot;,
+        &quot;width&quot;: 2,
+        &quot;height&quot;: 1
+      },
+      {
+        &quot;id&quot;: &quot;C&quot;,
+        &quot;width&quot;: 2,
+        &quot;height&quot;: 1
+      },
+      {
+        &quot;id&quot;: &quot;D&quot;,
+        &quot;width&quot;: 2,
+        &quot;height&quot;: 1
+      },
+      {
+        &quot;id&quot;: &quot;E&quot;,
+        &quot;width&quot;: 1,
+        &quot;height&quot;: 1
+      },
+      {
+        &quot;id&quot;: &quot;F&quot;,
+        &quot;width&quot;: 1,
+        &quot;height&quot;: 1
+      }
+    ],
+    &quot;nets&quot;: [
+      [
+        &quot;A&quot;,
+        &quot;B&quot;
+      ],
+      [
+        &quot;C&quot;,
+        &quot;D&quot;
+      ],
+      [
+        &quot;A&quot;,
+        &quot;C&quot;
+      ],
+      [
+        &quot;B&quot;,
+        &quot;D&quot;
+      ],
+      [
+        &quot;A&quot;,
+        &quot;B&quot;,
+        &quot;C&quot;,
+        &quot;D&quot;
+      ],
+      [
+        &quot;E&quot;,
+        &quot;F&quot;
+      ]
+    ],
+    &quot;placement&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 1
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 1
+      },
+      &quot;C&quot;: {
+        &quot;x&quot;: 1,
+        &quot;y&quot;: 5
+      },
+      &quot;D&quot;: {
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 5
+      },
+      &quot;E&quot;: {
+        &quot;x&quot;: 5,
+        &quot;y&quot;: 3
+      },
+      &quot;F&quot;: {
+        &quot;x&quot;: 6,
+        &quot;y&quot;: 3
+      }
+    },
+    &quot;congested_seed&quot;: {
+      &quot;A&quot;: {
+        &quot;x&quot;: 4,
+        &quot;y&quot;: 2
+      },
+      &quot;B&quot;: {
+        &quot;x&quot;: 5,
+        &quot;y&quot;: 2
+      },
+      &quot;C&quot;: {
+        &quot;x&quot;: 4,
+        &quot;y&quot;: 3
+      },
+      &quot;D&quot;: {
+        &quot;x&quot;: 5,
+        &quot;y&quot;: 3
+      },
+      &quot;E&quot;: {
+        &quot;x&quot;: 4.5,
+        &quot;y&quot;: 2.5
+      },
+      &quot;F&quot;: {
+        &quot;x&quot;: 5.5,
+        &quot;y&quot;: 2.5
+      }
+    },
+    &quot;notes&quot;: &quot;4×2 GCells over 12×8 chip. placement=spread; congested_seed=center cluster.&quot;
+  }
+}
+</code></pre></section><section id="transcript-zh"><h2>一张网，两种可能</h2>
+<h3>00:00:00.000 · 还没有布线，哪里可能会堵？</h3>
+<p>两个引脚需要连接，但真正的布线还没有发生。现在我们想提前知道：哪些格子可能承受更多需求？</p>
+<p>本课只研究一个小模型：两条可能的L形路线，各给一半概率，再把可能性逐格加起来。</p>
+<h3>00:00:20.500 · 两种拐弯，不是两根线</h3>
+<p>先横后竖：从A所在的行，走到B所在的列，再向上抵达B。这是一条候选路线。</p>
+<p>另一条先竖后横。我们还不知道选哪条，所以每条候选路线的概率都是二分之一。</p>
+<h3>00:00:39.567 · 转角：一次经过，只计一次</h3>
+<p>先看先横后竖的转角。它同时属于一段横线和一段竖线，却只被这条完整路线经过一次。</p>
+<p>因此，先合并完整路径中的重复格子，再给每格加零点五。不能因为转了一次弯，就把概率翻倍。</p>
+<h3>00:01:00.667 · 端点：两个候选的共同部分</h3>
+<p>A和B所在的两个端点格不同。两条候选都会经过它们，所以各收到零点五加零点五，合计一。</p>
+<p>一个候选经过的边界格是零点五；没有候选经过的内部格是零。每个数字都有路径作为理由。</p>
+<h3>00:01:21.867 · 把路径变成需求矩阵</h3>
+<p>四乘四的例子中，每条候选经过七个不同格子。七乘一半，再加七乘一半，总需求是七。</p>
+<p>注意，矩阵按列存储，图中的y轴向上。不要把数组行号、屏幕向下的方向和芯片坐标混为一谈。</p>
+<h3>00:01:43.900 · 先有容量，才有“超额”</h3>
+<p>把每格容量设为零点六。两个端点的需求一大于容量，各溢出零点四，总溢出零点八。</p>
+<p>需求等于容量时只是恰好满载，溢出为零。降低容量不会改动需求矩阵，却可能增加热点。</p>
+<h3>00:02:06.000 · 同一总量，不同空间分布</h3>
+<p>RUDY把需求铺在整个包围盒里。为了只比较空间分布，我们先把每个net的总量匹配到L模型。</p>
+<p>这里总量七均摊到十六格，每格零点四三七五。它看起来没有热点，却抹平了候选路径的走廊。</p>
+<h3>00:02:27.967 · 单位不同，不能直接排名</h3>
+<p>原始RUDY使用半周长作为总量。这个例子的半周长是十八，与占用总量七不是同一种单位。</p>
+<p>因此，原始数值保留供复现；等总量对比用来观察分布。不能挑一个更小的溢出，就宣布模型更好。</p>
+<h3>00:02:49.067 · 共线时，两种路线重合</h3>
+<p>如果两个引脚落在同一行，两种候选会经过相同的四个格子。每个格子都收到两个半份，需求是一。</p>
+<p>路线重合，不代表要删除其中一种候选。合并的是同一路线内的重复格子，候选之间仍按概率求和。</p>
+<h3>00:03:10.667 · 同格：暴露模型的单位</h3>
+<p>当两个引脚在同一个格子，两条候选都退化成这一个格子。含端点的占用模型仍给它一单位。</p>
+<p>而真实坐标完全重合时，半周长可以是零。这不是计算矛盾，而是提醒我们：占用、线长和金属轨数并不相同。</p>
+<h3>00:03:33.300 · 多引脚：中心星形近似</h3>
+<p>多个引脚时，先找包围盒中心，再把中心连到各个引脚。每条辐条仍使用两种L候选。</p>
+<p>我们沿用上游的每条辐条一除以p权重。这是一个讲清楚的近似，不是最短Steiner树，也不保证能绕过障碍。</p>
+<h3>00:03:55.167 · 可复现，也要解释源码差异</h3>
+<p>教师helper把每条腿的零点五均摊到覆盖格子，四条腿合计两单位。这个数不能直接叫每格通过概率。</p>
+<p>本站提供独立的源码兼容模式；默认完整路径去重则遵循讲稿语义。选择哪个模式，网页都会明确显示。</p>
+<h3>00:04:18.633 · 一张热图，不是一份布线解</h3>
+<p>模型没有考虑金属层、障碍、共享树、过孔和实际拥塞下的绕行。它只能给布局阶段一个快速反馈。</p>
+<p>正确的下一步，是在相同单位和相同输入下比较，再用更细的路由器验证，而不是把颜色当作结论。</p>
+<h3>00:04:40.700 · 现在，自己让一个数字改变</h3>
+<p>打开实验，移动一个引脚，查看每条候选的贡献。试着预测一个转角、一个端点和一个热点，再提交答案。</p>
+<p>再到Python交互台运行同一组数据。记住这条顺序：先明确路径与单位，再计算需求，最后相信热力图。</p><p><a href="../media/lesson.zh.mp4">MP4</a> · <a href="../media/lesson.zh.bilingual.vtt" download>中文 + English VTT</a></p></section><section id="transcript-en"><h2>One Net, Two Routes</h2>
+<h3>00:00:00.000 · Where could a wire create a bottleneck?</h3>
+<p>Two pins need a connection, but no wire has been routed yet. Can we predict which grid cells may carry more demand?</p>
+<p>We will study a small model: two possible L-shaped routes, each with half the probability. Then we add their contributions cell by cell.</p>
+<h3>00:00:20.500 · Two possible bends, not two simultaneous wires</h3>
+<p>First, horizontal then vertical: follow A’s row to B’s column, then move up to B. This is one candidate route.</p>
+<p>The other candidate goes vertical then horizontal. We do not know which one will be selected, so each candidate has probability one half.</p>
+<h3>00:00:39.567 · A bend is one visit</h3>
+<p>Look at the bend of the horizontal–vertical candidate. It belongs to both a horizontal leg and a vertical leg, but the complete route visits it once.</p>
+<p>Deduplicate cells within the complete path before adding point five to each one. Turning a corner must not double the visit probability.</p>
+<h3>00:01:00.667 · Endpoints belong to both candidates</h3>
+<p>The endpoint cells containing A and B are different. Both candidates visit them, so each receives point five plus point five, giving one.</p>
+<p>Boundary cells on just one candidate receive point five. Interior cells visited by neither receive zero. Every number has a route behind it.</p>
+<h3>00:01:21.867 · Turn routes into a demand matrix</h3>
+<p>In this four-by-four example, each candidate visits seven distinct cells. Seven times one half, plus seven times one half, gives total demand seven.</p>
+<p>Our matrix is stored by column, and the diagram’s y-axis points upward. Array indices, screen direction and chip coordinates are different conventions.</p>
+<h3>00:01:43.900 · Capacity turns demand into overflow</h3>
+<p>Set each cell’s capacity to point six. The two endpoints have demand one, so each overflows by point four. Total overflow is point eight.</p>
+<p>Demand equal to capacity means exactly full, with zero overflow. Lowering capacity leaves demand unchanged, but may create more hotspots.</p>
+<h3>00:02:06.000 · Same mass, different spatial distribution</h3>
+<p>RUDY spreads demand over the whole bounding box. To compare spatial distribution alone, we first match each net’s total mass to the L model.</p>
+<p>Here, mass seven spread over sixteen cells gives point four three seven five per cell. No hotspot appears, but the route corridors have been smoothed away.</p>
+<h3>00:02:27.967 · Different units cannot directly rank models</h3>
+<p>Raw RUDY uses half-perimeter wirelength as its total mass. In this example that length is eighteen, a different unit from occupancy mass seven.</p>
+<p>We retain raw values for reproduction and use matched mass to compare distributions. A smaller overflow number alone does not make a model better.</p>
+<h3>00:02:49.067 · Aligned pins make the candidates coincide</h3>
+<p>If both pins are on the same row, the candidates visit the same four cells. Each cell receives two half contributions, giving demand one.</p>
+<p>Coincident routes do not mean discarding one candidate. We remove duplicate cells within a route, while contributions from distinct candidates still add.</p>
+<h3>00:03:10.667 · The same-cell case exposes the unit</h3>
+<p>When both pins occupy one cell, each candidate reduces to that cell. Our endpoint-inclusive occupancy model still assigns it one unit.</p>
+<p>If the physical coordinates coincide, half-perimeter length can be zero. There is no contradiction: occupancy, wirelength and physical track counts are different quantities.</p>
+<h3>00:03:33.300 · Multi-pin nets use a center-star approximation</h3>
+<p>For a multi-pin net, find the bounding-box center and connect it to every pin. Each spoke still has two L-shaped candidates.</p>
+<p>We retain the source convention of weight one over p per spoke. This is an explicit approximation, not a minimum Steiner tree or an obstacle-avoiding router.</p>
+<h3>00:03:55.167 · Reproduce the source without hiding its convention</h3>
+<p>The teacher’s helper spreads point five over each leg’s cells, giving total mass two across four legs. Those values are not per-cell visit probabilities.</p>
+<p>The site offers a separate source-compatibility mode. The default complete-path deduplication follows the transcript’s meaning. The selected convention is always shown.</p>
+<h3>00:04:18.633 · A heat map is not a routed solution</h3>
+<p>This model omits metal layers, obstacles, shared trees, vias and detours under congestion. It offers quick placement feedback, not a completed route.</p>
+<p>Compare models on the same input and compatible units, then validate with a more detailed router. Color alone is not a conclusion.</p>
+<h3>00:04:40.700 · Now change one number yourself</h3>
+<p>Open the lab, move a pin and inspect each candidate’s contribution. Predict a bend, an endpoint and a hotspot before checking your answers.</p>
+<p>Then run the same data in the Python workspace. First define the routes and units, then compute demand, and only then trust the heat map.</p><p><a href="../media/lesson.en.mp4">MP4</a> · <a href="../media/lesson.en.bilingual.vtt" download>中文 + English VTT</a></p></section><section id="reproduce"><h2 data-zh="复现与验证" data-en="Reproduce and verify">复现与验证</h2><p data-zh="源码、固定上游、引擎、独立Python、冻结音频与语义分镜都保存在指定GitHub仓库。使用Python媒体依赖环境运行下列命令；只有语音文字改变才需要重新调用TTS。" data-en="Source, pinned upstream references, engine, independent Python, frozen audio and semantic storyboards are in the GitHub repository. Use the media Python environment for the commands below. TTS is needed again only when speech changes."></p><pre tabindex="0"><code>node --test tests/*.test.mjs
+node scripts/export-data.mjs
+python scripts/speech.py
+python scripts/render-film.py --stills
+python scripts/render-film.py
+python scripts/render-film.py --lang en
+python scripts/build_reading.py
+python scripts/check-site.py
+python scripts/verify-media.py</code></pre><p data-zh="影片共303.67秒，14个语义场景，两种语言独立配音，共用经过阅读时间检查的时间轴。自动媒体检查不等于完整人工听审。" data-en="The film has 14 semantic scenes over 303.67 seconds, with separate narration and a shared timeline checked for caption reading time. Automated media checks are not a complete human listening review."></p><a href="https://github.com/FanqinZeng/eda-congestion-lesson05">GitHub / source / licenses</a></section><p id="copy-status" role="status"></p></main><footer class="wrap">CONGESTION / 05 <a id="footer-back" href="../" data-zh="返回实验" data-en="Back to the lab">返回实验</a></footer><script type="module" src="../assets/reading.mjs"></script></body></html>

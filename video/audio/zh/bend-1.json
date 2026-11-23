@@ -1,0 +1,6 @@
+{
+  "digest": "926b25d42f76d879c7ba47815429870a73f63c679a9d5450c993f9c177fc8b5f",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "因此，先合并完整路径中的重复格子，再给每格加零点五。不能因为转了一次弯，就把概率翻倍。",
+  "semantic_id": "bend-1"
+}

@@ -1,0 +1,6 @@
+{
+  "digest": "57050157af7a69ea5ea3bcab4b8071519c68964ba27a163b169b2a2ea9a13e8c",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "多个引脚时，先找包围盒中心，再把中心连到各个引脚。每条辐条仍使用两种L候选。",
+  "semantic_id": "multi-pin-0"
+}

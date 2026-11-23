@@ -1,0 +1,6 @@
+{
+  "digest": "a240586fc99693d0dc69d0cef46caea4e9dff2c22a269871a837cb38c11bfcdc",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "我们沿用上游的每条辐条一除以p权重。这是一个讲清楚的近似，不是最短Steiner树，也不保证能绕过障碍。",
+  "semantic_id": "multi-pin-1"
+}

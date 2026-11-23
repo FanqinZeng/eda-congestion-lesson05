@@ -1,0 +1,167 @@
+WEBVTT
+
+question-0
+00:00:00.000 --> 00:00:10.550 line:78% size:92%
+两个引脚需要连接，但真正的布线还没有发生。现在我们想提前知道：哪些格子可能承受更多需求？
+Two pins need a connection, but no wire has been routed yet. Can we predict which grid cells may carry more demand?
+
+question-1
+00:00:10.600 --> 00:00:20.450 line:78% size:92%
+本课只研究一个小模型：两条可能的L形路线，各给一半概率，再把可能性逐格加起来。
+We will study a small model: two possible L-shaped routes, each with half the probability. Then we add their
+contributions cell by cell.
+
+two-routes-0
+00:00:20.500 --> 00:00:29.583 line:78% size:92%
+先横后竖：从A所在的行，走到B所在的列，再向上抵达B。这是一条候选路线。
+First, horizontal then vertical: follow A’s row to B’s column, then move up to B. This is one candidate route.
+
+two-routes-1
+00:00:29.633 --> 00:00:39.517 line:78% size:92%
+另一条先竖后横。我们还不知道选哪条，所以每条候选路线的概率都是二分之一。
+The other candidate goes vertical then horizontal. We do not know which one will be selected, so each candidate has
+probability one half.
+
+bend-0
+00:00:39.567 --> 00:00:50.250 line:78% size:92%
+先看先横后竖的转角。它同时属于一段横线和一段竖线，却只被这条完整路线经过一次。
+Look at the bend of the horizontal–vertical candidate. It belongs to both a horizontal leg and a vertical leg, but the
+complete route visits it once.
+
+bend-1
+00:00:50.300 --> 00:01:00.617 line:78% size:92%
+因此，先合并完整路径中的重复格子，再给每格加零点五。不能因为转了一次弯，就把概率翻倍。
+Deduplicate cells within the complete path before adding point five to each one. Turning a corner must not double the
+visit probability.
+
+endpoints-0
+00:01:00.667 --> 00:01:10.817 line:78% size:92%
+A和B所在的两个端点格不同。两条候选都会经过它们，所以各收到零点五加零点五，合计一。
+The endpoint cells containing A and B are different. Both candidates visit them, so each receives point five plus point
+five, giving one.
+
+endpoints-1
+00:01:10.867 --> 00:01:21.817 line:78% size:92%
+一个候选经过的边界格是零点五；没有候选经过的内部格是零。每个数字都有路径作为理由。
+Boundary cells on just one candidate receive point five. Interior cells visited by neither receive zero. Every number has
+a route behind it.
+
+sum-0
+00:01:21.867 --> 00:01:32.950 line:78% size:92%
+四乘四的例子中，每条候选经过七个不同格子。七乘一半，再加七乘一半，总需求是七。
+In this four-by-four example, each candidate visits seven distinct cells. Seven times one half, plus seven times one half,
+gives total demand seven.
+
+sum-1
+00:01:33.000 --> 00:01:43.850 line:78% size:92%
+注意，矩阵按列存储，图中的y轴向上。不要把数组行号、屏幕向下的方向和芯片坐标混为一谈。
+Our matrix is stored by column, and the diagram’s y-axis points upward. Array indices, screen direction and chip
+coordinates are different conventions.
+
+capacity-0
+00:01:43.900 --> 00:01:55.083 line:78% size:92%
+把每格容量设为零点六。两个端点的需求一大于容量，各溢出零点四，总溢出零点八。
+Set each cell’s capacity to point six. The two endpoints have demand one, so each overflows by point four. Total
+overflow is point eight.
+
+capacity-1
+00:01:55.133 --> 00:02:05.950 line:78% size:92%
+需求等于容量时只是恰好满载，溢出为零。降低容量不会改动需求矩阵，却可能增加热点。
+Demand equal to capacity means exactly full, with zero overflow. Lowering capacity leaves demand unchanged, but
+may create more hotspots.
+
+rudy-0
+00:02:06.000 --> 00:02:16.750 line:78% size:92%
+RUDY把需求铺在整个包围盒里。为了只比较空间分布，我们先把每个net的总量匹配到L模型。
+RUDY spreads demand over the whole bounding box. To compare spatial distribution alone, we first match each net’s
+total mass to the L model.
+
+rudy-1
+00:02:16.800 --> 00:02:27.917 line:78% size:92%
+这里总量七均摊到十六格，每格零点四三七五。它看起来没有热点，却抹平了候选路径的走廊。
+Here, mass seven spread over sixteen cells gives point four three seven five per cell. No hotspot appears, but the route
+corridors have been smoothed away.
+
+units-0
+00:02:27.967 --> 00:02:38.250 line:78% size:92%
+原始RUDY使用半周长作为总量。这个例子的半周长是十八，与占用总量七不是同一种单位。
+Raw RUDY uses half-perimeter wirelength as its total mass. In this example that length is eighteen, a different unit from
+occupancy mass seven.
+
+units-1
+00:02:38.300 --> 00:02:49.017 line:78% size:92%
+因此，原始数值保留供复现；等总量对比用来观察分布。不能挑一个更小的溢出，就宣布模型更好。
+We retain raw values for reproduction and use matched mass to compare distributions. A smaller overflow number
+alone does not make a model better.
+
+aligned-0
+00:02:49.067 --> 00:02:59.617 line:78% size:92%
+如果两个引脚落在同一行，两种候选会经过相同的四个格子。每个格子都收到两个半份，需求是一。
+If both pins are on the same row, the candidates visit the same four cells. Each cell receives two half contributions,
+giving demand one.
+
+aligned-1
+00:02:59.667 --> 00:03:10.617 line:78% size:92%
+路线重合，不代表要删除其中一种候选。合并的是同一路线内的重复格子，候选之间仍按概率求和。
+Coincident routes do not mean discarding one candidate. We remove duplicate cells within a route, while contributions
+from distinct candidates still add.
+
+same-cell-0
+00:03:10.667 --> 00:03:20.917 line:78% size:92%
+当两个引脚在同一个格子，两条候选都退化成这一个格子。含端点的占用模型仍给它一单位。
+When both pins occupy one cell, each candidate reduces to that cell. Our endpoint-inclusive occupancy model still
+assigns it one unit.
+
+same-cell-1
+00:03:20.967 --> 00:03:33.250 line:78% size:92%
+而真实坐标完全重合时，半周长可以是零。这不是计算矛盾，而是提醒我们：占用、线长和金属轨数并不相同。
+If the physical coordinates coincide, half-perimeter length can be zero. There is no contradiction: occupancy,
+wirelength and physical track counts are different quantities.
+
+multi-pin-0
+00:03:33.300 --> 00:03:42.750 line:78% size:92%
+多个引脚时，先找包围盒中心，再把中心连到各个引脚。每条辐条仍使用两种L候选。
+For a multi-pin net, find the bounding-box center and connect it to every pin. Each spoke still has two L-shaped
+candidates.
+
+multi-pin-1
+00:03:42.800 --> 00:03:55.117 line:78% size:92%
+我们沿用上游的每条辐条一除以p权重。这是一个讲清楚的近似，不是最短Steiner树，也不保证能绕过障碍。
+We retain the source convention of weight one over p per spoke. This is an explicit approximation, not a minimum
+Steiner tree or an obstacle-avoiding router.
+
+source-convention-0
+00:03:55.167 --> 00:04:06.583 line:78% size:92%
+教师helper把每条腿的零点五均摊到覆盖格子，四条腿合计两单位。这个数不能直接叫每格通过概率。
+The teacher’s helper spreads point five over each leg’s cells, giving total mass two across four legs. Those values are
+not per-cell visit probabilities.
+
+source-convention-1
+00:04:06.633 --> 00:04:18.583 line:78% size:92%
+本站提供独立的源码兼容模式；默认完整路径去重则遵循讲稿语义。选择哪个模式，网页都会明确显示。
+The site offers a separate source-compatibility mode. The default complete-path deduplication follows the
+transcript’s meaning. The selected convention is always shown.
+
+limits-0
+00:04:18.633 --> 00:04:30.050 line:78% size:92%
+模型没有考虑金属层、障碍、共享树、过孔和实际拥塞下的绕行。它只能给布局阶段一个快速反馈。
+This model omits metal layers, obstacles, shared trees, vias and detours under congestion. It offers quick placement
+feedback, not a completed route.
+
+limits-1
+00:04:30.100 --> 00:04:40.650 line:78% size:92%
+正确的下一步，是在相同单位和相同输入下比较，再用更细的路由器验证，而不是把颜色当作结论。
+Compare models on the same input and compatible units, then validate with a more detailed router. Color alone is not
+a conclusion.
+
+try-it-0
+00:04:40.700 --> 00:04:51.917 line:78% size:92%
+打开实验，移动一个引脚，查看每条候选的贡献。试着预测一个转角、一个端点和一个热点，再提交答案。
+Open the lab, move a pin and inspect each candidate’s contribution. Predict a bend, an endpoint and a hotspot
+before checking your answers.
+
+try-it-1
+00:04:51.967 --> 00:05:03.617 line:78% size:92%
+再到Python交互台运行同一组数据。记住这条顺序：先明确路径与单位，再计算需求，最后相信热力图。
+Then run the same data in the Python workspace. First define the routes and units, then compute demand, and only
+then trust the heat map.

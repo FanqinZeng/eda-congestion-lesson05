@@ -1,0 +1,6 @@
+{
+  "digest": "115b2547fb6478b5d58f71207d33f2be0a48f0fb655864b5c2f11e26d6448baf",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "原始RUDY使用半周长作为总量。这个例子的半周长是十八，与占用总量七不是同一种单位。",
+  "semantic_id": "units-0"
+}

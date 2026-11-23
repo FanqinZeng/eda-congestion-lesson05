@@ -1,0 +1,6 @@
+{
+  "digest": "07efb815228e44e11898b454fbfaea7229f788a0d372d5e44fcedda0d6843bc1",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "把每格容量设为零点六。两个端点的需求一大于容量，各溢出零点四，总溢出零点八。",
+  "semantic_id": "capacity-0"
+}

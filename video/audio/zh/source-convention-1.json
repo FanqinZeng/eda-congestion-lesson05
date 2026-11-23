@@ -1,0 +1,6 @@
+{
+  "digest": "1d17f7276d6a1c7ace22945b8d3176a4e339b25d0e569aaafae910bb01e0d8de",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "本站提供独立的源码兼容模式；默认完整路径去重则遵循讲稿语义。选择哪个模式，网页都会明确显示。",
+  "semantic_id": "source-convention-1"
+}

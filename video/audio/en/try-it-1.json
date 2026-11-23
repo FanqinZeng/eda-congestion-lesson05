@@ -1,0 +1,6 @@
+{
+  "digest": "d5bca8d0ba4d1377ca815ea2edd4c0d55d1e90a3d97efbf10b0cf91891ce198a",
+  "voice": "en-US-JennyNeural",
+  "text": "Then run the same data in the Python workspace. First define the routes and units, then compute demand, and only then trust the heat map.",
+  "semantic_id": "try-it-1"
+}

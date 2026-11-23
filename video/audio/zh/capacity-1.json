@@ -1,0 +1,6 @@
+{
+  "digest": "b80d28729b64b8e6264afc0089f454cb582000b84ef505ab0dfd642cd8cfec3f",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "需求等于容量时只是恰好满载，溢出为零。降低容量不会改动需求矩阵，却可能增加热点。",
+  "semantic_id": "capacity-1"
+}

@@ -1,0 +1,6 @@
+{
+  "digest": "a044f46c19988f7b48b17bb41bfba3fce61c6f23063185583cc5b3eb5c147525",
+  "voice": "en-US-JennyNeural",
+  "text": "This model omits metal layers, obstacles, shared trees, vias and detours under congestion. It offers quick placement feedback, not a completed route.",
+  "semantic_id": "limits-0"
+}

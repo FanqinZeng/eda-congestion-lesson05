@@ -1,0 +1,6 @@
+{
+  "digest": "9d21513ac983fe977df0f669952bfbc640804bc0f90c41ae3b711ce3a886524b",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "A和B所在的两个端点格不同。两条候选都会经过它们，所以各收到零点五加零点五，合计一。",
+  "semantic_id": "endpoints-0"
+}

@@ -1,0 +1,6 @@
+{
+  "digest": "bcd83e84d2fa20a12b8672544c665413203de750074c9dbe06f40a00a297dc92",
+  "voice": "en-US-JennyNeural",
+  "text": "Demand equal to capacity means exactly full, with zero overflow. Lowering capacity leaves demand unchanged, but may create more hotspots.",
+  "semantic_id": "capacity-1"
+}

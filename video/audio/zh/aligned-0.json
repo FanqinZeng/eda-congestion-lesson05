@@ -1,0 +1,6 @@
+{
+  "digest": "37eae0c67db149474e509b0d705d498273f1b6d1a9a02149441cdb3548e76262",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "如果两个引脚落在同一行，两种候选会经过相同的四个格子。每个格子都收到两个半份，需求是一。",
+  "semantic_id": "aligned-0"
+}

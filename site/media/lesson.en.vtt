@@ -1,0 +1,139 @@
+WEBVTT
+
+question-0
+00:00:00.000 --> 00:00:10.550 line:78% size:92%
+Two pins need a connection, but no wire has been routed yet. Can we predict which grid cells may carry more demand?
+
+question-1
+00:00:10.600 --> 00:00:20.450 line:78% size:92%
+We will study a small model: two possible L-shaped routes, each with half the probability. Then we add their
+contributions cell by cell.
+
+two-routes-0
+00:00:20.500 --> 00:00:29.583 line:78% size:92%
+First, horizontal then vertical: follow A’s row to B’s column, then move up to B. This is one candidate route.
+
+two-routes-1
+00:00:29.633 --> 00:00:39.517 line:78% size:92%
+The other candidate goes vertical then horizontal. We do not know which one will be selected, so each candidate has
+probability one half.
+
+bend-0
+00:00:39.567 --> 00:00:50.250 line:78% size:92%
+Look at the bend of the horizontal–vertical candidate. It belongs to both a horizontal leg and a vertical leg, but the
+complete route visits it once.
+
+bend-1
+00:00:50.300 --> 00:01:00.617 line:78% size:92%
+Deduplicate cells within the complete path before adding point five to each one. Turning a corner must not double the
+visit probability.
+
+endpoints-0
+00:01:00.667 --> 00:01:10.817 line:78% size:92%
+The endpoint cells containing A and B are different. Both candidates visit them, so each receives point five plus point
+five, giving one.
+
+endpoints-1
+00:01:10.867 --> 00:01:21.817 line:78% size:92%
+Boundary cells on just one candidate receive point five. Interior cells visited by neither receive zero. Every number has
+a route behind it.
+
+sum-0
+00:01:21.867 --> 00:01:32.950 line:78% size:92%
+In this four-by-four example, each candidate visits seven distinct cells. Seven times one half, plus seven times one half,
+gives total demand seven.
+
+sum-1
+00:01:33.000 --> 00:01:43.850 line:78% size:92%
+Our matrix is stored by column, and the diagram’s y-axis points upward. Array indices, screen direction and chip
+coordinates are different conventions.
+
+capacity-0
+00:01:43.900 --> 00:01:55.083 line:78% size:92%
+Set each cell’s capacity to point six. The two endpoints have demand one, so each overflows by point four. Total
+overflow is point eight.
+
+capacity-1
+00:01:55.133 --> 00:02:05.950 line:78% size:92%
+Demand equal to capacity means exactly full, with zero overflow. Lowering capacity leaves demand unchanged, but
+may create more hotspots.
+
+rudy-0
+00:02:06.000 --> 00:02:16.750 line:78% size:92%
+RUDY spreads demand over the whole bounding box. To compare spatial distribution alone, we first match each net’s
+total mass to the L model.
+
+rudy-1
+00:02:16.800 --> 00:02:27.917 line:78% size:92%
+Here, mass seven spread over sixteen cells gives point four three seven five per cell. No hotspot appears, but the route
+corridors have been smoothed away.
+
+units-0
+00:02:27.967 --> 00:02:38.250 line:78% size:92%
+Raw RUDY uses half-perimeter wirelength as its total mass. In this example that length is eighteen, a different unit from
+occupancy mass seven.
+
+units-1
+00:02:38.300 --> 00:02:49.017 line:78% size:92%
+We retain raw values for reproduction and use matched mass to compare distributions. A smaller overflow number
+alone does not make a model better.
+
+aligned-0
+00:02:49.067 --> 00:02:59.617 line:78% size:92%
+If both pins are on the same row, the candidates visit the same four cells. Each cell receives two half contributions,
+giving demand one.
+
+aligned-1
+00:02:59.667 --> 00:03:10.617 line:78% size:92%
+Coincident routes do not mean discarding one candidate. We remove duplicate cells within a route, while contributions
+from distinct candidates still add.
+
+same-cell-0
+00:03:10.667 --> 00:03:20.917 line:78% size:92%
+When both pins occupy one cell, each candidate reduces to that cell. Our endpoint-inclusive occupancy model still
+assigns it one unit.
+
+same-cell-1
+00:03:20.967 --> 00:03:33.250 line:78% size:92%
+If the physical coordinates coincide, half-perimeter length can be zero. There is no contradiction: occupancy,
+wirelength and physical track counts are different quantities.
+
+multi-pin-0
+00:03:33.300 --> 00:03:42.750 line:78% size:92%
+For a multi-pin net, find the bounding-box center and connect it to every pin. Each spoke still has two L-shaped
+candidates.
+
+multi-pin-1
+00:03:42.800 --> 00:03:55.117 line:78% size:92%
+We retain the source convention of weight one over p per spoke. This is an explicit approximation, not a minimum
+Steiner tree or an obstacle-avoiding router.
+
+source-convention-0
+00:03:55.167 --> 00:04:06.583 line:78% size:92%
+The teacher’s helper spreads point five over each leg’s cells, giving total mass two across four legs. Those values are
+not per-cell visit probabilities.
+
+source-convention-1
+00:04:06.633 --> 00:04:18.583 line:78% size:92%
+The site offers a separate source-compatibility mode. The default complete-path deduplication follows the
+transcript’s meaning. The selected convention is always shown.
+
+limits-0
+00:04:18.633 --> 00:04:30.050 line:78% size:92%
+This model omits metal layers, obstacles, shared trees, vias and detours under congestion. It offers quick placement
+feedback, not a completed route.
+
+limits-1
+00:04:30.100 --> 00:04:40.650 line:78% size:92%
+Compare models on the same input and compatible units, then validate with a more detailed router. Color alone is not
+a conclusion.
+
+try-it-0
+00:04:40.700 --> 00:04:51.917 line:78% size:92%
+Open the lab, move a pin and inspect each candidate’s contribution. Predict a bend, an endpoint and a hotspot
+before checking your answers.
+
+try-it-1
+00:04:51.967 --> 00:05:03.617 line:78% size:92%
+Then run the same data in the Python workspace. First define the routes and units, then compute demand, and only
+then trust the heat map.

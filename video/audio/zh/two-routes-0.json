@@ -1,0 +1,6 @@
+{
+  "digest": "ba13620a989734d8e0d3cfc7cd1c85caea8302c5038fed7e6bd78cf0ecd2828f",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "先横后竖：从A所在的行，走到B所在的列，再向上抵达B。这是一条候选路线。",
+  "semantic_id": "two-routes-0"
+}

@@ -1,0 +1,6 @@
+{
+  "digest": "ac0fee9a644aba785a6bae02b7fd214ed2ed1f89136466d9efe4c1be865f7a4a",
+  "voice": "en-US-JennyNeural",
+  "text": "When both pins occupy one cell, each candidate reduces to that cell. Our endpoint-inclusive occupancy model still assigns it one unit.",
+  "semantic_id": "same-cell-0"
+}

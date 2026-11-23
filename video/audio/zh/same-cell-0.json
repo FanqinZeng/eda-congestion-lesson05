@@ -1,0 +1,6 @@
+{
+  "digest": "9a1ad6749b817de9f461dfb6b4754910725dbaa0ff54cf776c8a9ab94a5e8ebe",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "当两个引脚在同一个格子，两条候选都退化成这一个格子。含端点的占用模型仍给它一单位。",
+  "semantic_id": "same-cell-0"
+}

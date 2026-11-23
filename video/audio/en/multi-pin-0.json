@@ -1,0 +1,6 @@
+{
+  "digest": "83babc0cf588e45c1fe1f86065f6f602a6e0941e5d04532e06f3ffa53df86770",
+  "voice": "en-US-JennyNeural",
+  "text": "For a multi-pin net, find the bounding-box center and connect it to every pin. Each spoke still has two L-shaped candidates.",
+  "semantic_id": "multi-pin-0"
+}

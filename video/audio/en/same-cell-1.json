@@ -1,0 +1,6 @@
+{
+  "digest": "5f1bdf4d00af12057b9a59b0adae2c409fbe0ee575f94b99d3560dddc0a3cfba",
+  "voice": "en-US-JennyNeural",
+  "text": "If the physical coordinates coincide, half-perimeter length can be zero. There is no contradiction: occupancy, wirelength and physical track counts are different quantities.",
+  "semantic_id": "same-cell-1"
+}

@@ -1,0 +1,6 @@
+{
+  "digest": "bcb04b7900af8831dbb0bba18e8c32351e74548f90d8743868291a670df233a7",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "text": "路线重合，不代表要删除其中一种候选。合并的是同一路线内的重复格子，候选之间仍按概率求和。",
+  "semantic_id": "aligned-1"
+}
