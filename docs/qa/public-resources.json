@@ -1,62 +1,99 @@
 {
   "status": "passed",
   "base": "https://fanqinzeng.github.io/eda-congestion-lesson05/",
-  "source_commit": "57ac3d365ccd19f61e06f30e366e504274f975b7",
-  "actions_run": 45249418282,
+  "source_commit": "09038c05ae812ffac575b33f3a3251e6251847bf",
+  "actions_run": 45255758475,
   "checks": [
     {
       "path": "/",
       "status": 200,
       "content_type": "text/html; charset=utf-8",
-      "content_length": "19391"
+      "content_length": "19391",
+      "sha256": "360b4f8b6f5ac5c3747eacf756f1986f3ac12fbe2b0cbad7dbdf30cadd8b0d0b"
     },
     {
       "path": "reading/",
       "status": 200,
       "content_type": "text/html; charset=utf-8",
-      "content_length": "40575"
+      "content_length": "40575",
+      "sha256": "77fdc66157951e5d1078bcaf70f08dc9ea24a584c36b5ec1fab2615b1bffaf4d"
     },
     {
       "path": "python/",
       "status": 200,
       "content_type": "text/html; charset=utf-8",
-      "content_length": "3081"
+      "content_length": "3081",
+      "sha256": "b4942ed800dbd4248f7a250adde57f6c672b781958daa9d45d67fef35e3e29fd"
+    },
+    {
+      "path": "assets/app.mjs",
+      "status": 200,
+      "content_type": "text/javascript; charset=utf-8",
+      "content_length": "17460",
+      "sha256": "6350cca72c3901ed0464fbf4ae661e86329fc75fd3db132fcf08c86a5e2a4a69"
     },
     {
       "path": "assets/engine.mjs",
       "status": 200,
       "content_type": "text/javascript; charset=utf-8",
-      "content_length": "3634"
+      "content_length": "3634",
+      "sha256": "8b7e9cd307f2b0fde5defc2e110d62e49c3905b9adf3bcb3d29a015896261103"
     },
     {
       "path": "assets/player.mjs",
       "status": 200,
       "content_type": "text/javascript; charset=utf-8",
-      "content_length": "5474"
+      "content_length": "5474",
+      "sha256": "d5c9fe51ad37010fc7b3bbd5226ab84981c99eb56b0bda46ae44f9581fdf695f"
+    },
+    {
+      "path": "downloads/reference.py",
+      "status": 200,
+      "content_type": "application/octet-stream",
+      "content_length": "2875",
+      "sha256": "8d36a5c977ce646e2a4fbea53babb8f5b8b3706f8d1a32fefe1d4f2aa00ec960"
+    },
+    {
+      "path": "python/examples.mjs",
+      "status": 200,
+      "content_type": "text/javascript; charset=utf-8",
+      "content_length": "7622",
+      "sha256": "829dc7ee068b5dd16d808625e59ae685213c63a9ec56fca2211d14fef6978696"
+    },
+    {
+      "path": "python/worker.mjs",
+      "status": 200,
+      "content_type": "text/javascript; charset=utf-8",
+      "content_length": "1869",
+      "sha256": "8f31b12c771eada1ea883112b8d59e015f9c857459c067706147306b45ec85f4"
     },
     {
       "path": "assets/style.css",
       "status": 200,
       "content_type": "text/css; charset=utf-8",
-      "content_length": "9128"
+      "content_length": "9128",
+      "sha256": "8e1d03b1e559dd72d9f8c9d3c55969cfea82f175dd9147fb813ba018d03e7b1d"
     },
     {
       "path": "media/versions.json",
       "status": 200,
       "content_type": "application/json; charset=utf-8",
-      "content_length": "7478"
+      "content_length": "7478",
+      "sha256": "7e0ab1bf0815dc32309a337ce44729086f8c60492ecfb2f8d06681227f132fc9"
     },
     {
       "path": "media/lesson.zh.bilingual.vtt",
       "status": 200,
       "content_type": "text/vtt; charset=utf-8",
-      "content_length": "9237"
+      "content_length": "9237",
+      "sha256": "33ee5e543edcb2847e37073cda1fca3f384a47f85b13459b5e8c9a8283cfb64f"
     },
     {
       "path": "media/lesson.en.bilingual.vtt",
       "status": 200,
       "content_type": "text/vtt; charset=utf-8",
-      "content_length": "9237"
+      "content_length": "9237",
+      "sha256": "33ee5e543edcb2847e37073cda1fca3f384a47f85b13459b5e8c9a8283cfb64f"
     },
     {
       "path": "media/lesson.zh.mp4",

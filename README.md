@@ -2,7 +2,7 @@
 
 关于概率L形布线需求的中英文交互课程，对应 [eda-learning issue #43](https://github.com/yongfu-li/eda-learning/issues/43) 与固定上游 [module02-03-probabilistic-demand](https://github.com/yongfu-li/eda-learning/tree/003bcd49e3794e6cfd2680181cdbd347d673ad07/courses/learn_congestion/module02-03-probabilistic-demand)。
 
-公开入口：https://fanqinzeng.github.io/eda-congestion-lesson05/ 。首次上线状态以 [PROGRESS.md](PROGRESS.md) 的实际部署记录为准。
+公开入口：[课程主页](https://fanqinzeng.github.io/eda-congestion-lesson05/)。实际部署与验收状态以 [PROGRESS.md](PROGRESS.md) 的实际部署记录为准。
 
 ## 课程
 
@@ -18,6 +18,7 @@
 ```bash
 python3 scripts/serve.py --port 8185
 node --test tests/*.test.mjs
+python3 scripts/build-python.py
 python3 scripts/build_reading.py --check
 python3 scripts/check-site.py
 ```

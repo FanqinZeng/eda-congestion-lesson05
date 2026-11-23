@@ -1,5 +1,17 @@
 # 制作进度
 
+## 当前状态：已完成并公开验收
+
+2026-11-24 04:09（Asia/Shanghai），在当天14:00截止之前完成。公开主页：https://fanqinzeng.github.io/eda-congestion-lesson05/ 。生产提交09038c05ae812ffac575b33f3a3251e6251847bf，GitHub Actions 45255758475 completed/success；仓库About主页入口已设置。
+
+真实线上Edge完整学习路径18项通过，包括双语网页、编辑/拖动/键盘、练习、在线完整资料、影片播放/章节seek/语种字幕与倍速、真正CPython输出/异常/停止/live/超时。两个1080p30双语旁白版本均已完整解码；公开主页及15项资源HTTP200/206，HTML/JS/CSS/参考Python/示例/字幕/manifest逐字节散列与生产源一致，MP4支持206读取。真实BFCache返回保留代码并再次执行成功。
+
+试点保留skill v1；根据真实网页、样片、完整成片和整课审阅迭代后冻结v2.0.0，详见docs/skill-iteration.md及docs/skill-history/。
+
+报告：docs/qa/deployment.json、public-resources.json、navigation-online.json、media.json和独立审阅before/after。完整人工听审与物理触屏设备测试未做，未将自动验收写成这些人工验收。后续文档提交不改变已发布site内容。
+
+## 制作历史（以下记录保留当时状态）
+
 2026-11-24，Asia/Shanghai。目标截止：今天14:00。
 
 初始提交 f7d89ce 已实际推送，GitHub Pages已启用public=true、build_type=workflow。发布流水线随site变更触发，尚未上传课程网页，因此尚未有已交付的公开成品。
