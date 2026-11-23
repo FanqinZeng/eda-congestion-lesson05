@@ -1,0 +1,63 @@
+{
+  "upstream_commit": "003bcd49e3794e6cfd2680181cdbd347d673ad07",
+  "snapped": {
+    "A": {
+      "x": 4.0,
+      "y": 2.0
+    },
+    "B": {
+      "x": 4.0,
+      "y": 2.0
+    },
+    "C": {
+      "x": 5.0,
+      "y": 2.0
+    },
+    "D": {
+      "x": 8.0,
+      "y": 4.0
+    },
+    "E": {
+      "x": 0.0,
+      "y": 4.0
+    },
+    "F": {
+      "x": 10.0,
+      "y": 0.0
+    }
+  },
+  "legality": {
+    "ok": false,
+    "reason": "overlap A vs B on row y=2.0"
+  },
+  "total_displacement_from_unmodified_float_including_D": 4.3999999999999995,
+  "hpwl_cell_centers": 32.0,
+  "rounding": {
+    "inputs": [
+      0.5,
+      1.5,
+      2.5,
+      3.5,
+      4.5
+    ],
+    "python": [
+      0,
+      2,
+      2,
+      4,
+      4
+    ],
+    "javascript_Math_round": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "mixed_width_same_lower_left_center_hpwl": 0.5,
+  "notes": [
+    "This is an audit of upstream semantics, not product tests.",
+    "No final browser, video or deployment verification was performed."
+  ]
+}
