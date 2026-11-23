@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "checks": [
+    "hand-calculated golden metrics",
+    "candidate stepping uses engine trace",
+    "invalid capacity preserves last valid state and reset recovers",
+    "keyboard pin movement changes computed demand",
+    "English interface retains experimental state",
+    "pointer coordinates respect actual SVG transform",
+    "same-cell, compatibility and pinned teacher presets compute live",
+    "only correct submitted answers persist and clear",
+    "mobile layout and chapter navigation remain available",
+    "real video metadata, seek, voice/UI switch and preferences",
+    "complete notes and source are readable online",
+    "real CPython reference execution",
+    "real Python exceptions are visible",
+    "Python timeout terminates Worker and recovers",
+    "manual Stop preserves code and restores a usable interpreter",
+    "live mode executes edited code after debounce",
+    "disabled storage retains full lesson functionality"
+  ],
+  "browser": "Microsoft Edge headless, isolated context",
+  "base": "https://fanqinzeng.github.io/eda-congestion-lesson05/",
+  "media_playback_checked": true,
+  "errors": []
+}

@@ -3,7 +3,7 @@ import json,argparse,traceback
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'.qa';OUT.mkdir(exist_ok=True)
-p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8185/');p.add_argument('--media',action='store_true');a=p.parse_args();checks=[];errors=[]
+p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8185/');p.add_argument('--media',action='store_true');p.add_argument('--report',default='browser.json');a=p.parse_args();checks=[];errors=[]
 def checked(name):checks.append(name);print('PASS',name,flush=True)
 with sync_playwright() as tool:
  browser=tool.chromium.launch(executable_path='/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',headless=True)
@@ -39,4 +39,4 @@ with sync_playwright() as tool:
  except Exception as exc:
   page.screenshot(path=str(OUT/'failure.png'),full_page=True);result={'status':'failed','checks':checks,'failure':str(exc),'traceback':traceback.format_exc(),'errors':errors};raise
  finally:
-  (ROOT/'docs/qa/browser.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');browser.close()
+  (ROOT/'docs/qa'/a.report).write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');browser.close()

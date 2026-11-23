@@ -20,4 +20,10 @@ Node引擎与播放器10项测试、独立Python交叉核对、字体回归、�
 
 独立整课审阅已完成，发现的5项重要问题及2项教学说明问题已修复；真实回归保存before/after。完整套件与实际媒体检查通过。v2.0.0五文件已冻结并保存散列，初始v1不变。
 
-下一步：推送当前验收版本，检查对应提交的Actions与公开Pages。尚未公开交付；合法化现在可消费冻结v2进行一次制作。
+## 公开发布已验证
+
+2026-11-24：课程已公开发布 https://fanqinzeng.github.io/eda-congestion-lesson05/ 。生产提交57ac3d365ccd19f61e06f30e366e504274f975b7，Actions运行45249418282 completed/success。
+
+实际公开主页、reading、python、JS/CSS、双语VTT、两部MP4和WASM均HTTP200/206。真实线上Edge完整学习路径17项通过，包括项目子路径、双语片seek、真实CPython输出、异常、停止、live和超时恢复，详见docs/qa/deployment.json与public-resources.json。完整人工听审和物理触屏限制仍保留。
+
+拥塞试点及真实产物驱动的skill迭代已完成。合法化正在一次消费冻结v2.0.0；其迁移五文件散列已验证，记录在第二仓库docs/skill-transfer.json。后续只修复有证据的实际问题。
