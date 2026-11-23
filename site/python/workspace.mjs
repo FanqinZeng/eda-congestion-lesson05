@@ -75,3 +75,5 @@ $('reset').addEventListener('click',exampleChanged);
 $('live').addEventListener('change',()=>{clearTimeout(debounceTimer);if($('live').checked)run()});
 window.addEventListener('pagehide',()=>{clearTimeout(debounceTimer);clearTimers();worker?.terminate()});
 launch();
+
+window.addEventListener("pageshow",event=>{if(event.persisted){pendingRun=false;launch()}});

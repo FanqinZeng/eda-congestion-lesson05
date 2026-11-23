@@ -42,7 +42,7 @@ y=0    1.0  0.5  0.5  0.5
 <p>Python交互台在独立Worker中运行CPython，首次按需载入本地Pyodide。可以编辑全部代码、立即运行、开启实时模式、查看标准输出与异常。每次运行使用新的变量空间；停止或5秒超时会重启解释器，保留编辑内容与已有输出。</p>
 <p>参考例使用独立Python实现同一约定；练习要求补完路径去重和累加两个函数，附5条手算检查。只通过输出某个常数不能验证算法，应再试共线、同格、边界坐标与三pin。代码在当前浏览器运行，没有提交到服务器执行。</p>
 <h3>复杂度与真实局限</h3>
-<p>本实现显式遍历每条候选经过的格子；时间与所有候选访问格子的总数成正比，保存需求矩阵需要nx×ny空间。为教学保留了逐候选trace，记录量还会随候选数增加；这不是大芯片实现的内存优化方案。</p>
+<p>L路径沉积的时间与候选访问格子的总数成正比。本教学实现还会为RUDY遍历每个net的包围盒格子，并为每个候选复制一份nx×ny矩阵以保留轨迹；总时间还需计入这些包围盒访问和“候选数×网格大小”的复制开销，trace存储也有同样的额外因子。需求矩阵本身需要nx×ny空间。这不是大芯片实现的内存优化方案。</p>
 <p>没有金属层、过孔、障碍、共享树、路由器选择偏好、时序或拥塞绕行。两L各半是一个假设，不是从实际芯片测得的概率分布。用它做早期布局反馈，再用更细的路由器验证，不把一张漂亮热图当作布线完成证明。</p>
 <h3>继续实验</h3>
 <p>先预测转角0.5、总量7与总溢出0.8，再提交练习。修改一个坐标、改成共线、降低容量、切换原始RUDY单位；每次写下一句因果解释。最后打开教师4×2六net预设，对比默认修正和helper兼容，明确记录模式与容量。</p>
@@ -91,7 +91,7 @@ y=0    1.0  0.5  0.5  0.5
 <p>The workspace runs CPython inside a separate Worker, loading bundled Pyodide on demand. Edit all the code, run it immediately or use live mode, inspect output and exceptions, and stop a run. Each execution has fresh variables. Stop or the five-second timeout restarts the interpreter while keeping code and existing output.</p>
 <p>The reference independently implements the same conventions. The exercise asks you to complete path deduplication and demand accumulation, with five hand-checkable assertions. Printing a constant is not evidence of a working algorithm: also test aligned pins, same-cell pins, boundaries and three-pin stars. Code executes in this browser, not on a server.</p>
 <h3>Complexity and limits</h3>
-<p>The implementation explicitly visits candidate cells, so time scales with the total visited cells across candidates. The demand matrix requires nx×ny space. Teaching traces retain additional intermediate data and are not a memory-optimized large-chip design.</p>
+<p>L-path deposition costs time proportional to the candidate-cell visits. This teaching implementation additionally enumerates each net’s bounding-box tiles for RUDY and copies the full nx×ny matrix per candidate to retain a trace. Total time therefore also includes those box visits and candidate-count times grid size; trace storage has that same extra factor. The demand matrix alone uses nx×ny space. This is not a memory-optimized large-chip design.</p>
 <p>There are no metal layers, vias, obstacles, shared trees, timing objectives or congestion detours. Equal candidate probability is an assumption, not an empirical routing distribution. Use the model for early placement feedback and validate with a more detailed router. A heat map is not proof of completed routing.</p>
 <h3>Continue experimenting</h3>
 <p>Predict bend 0.5, total seven and overflow 0.8 before checking your answers. Move a pin, align the pins, lower capacity and inspect raw RUDY units, explaining one cause each time. Finally load the teacher’s 4×2 six-net fixture and compare the corrected default with source compatibility, recording convention and capacity.</p>

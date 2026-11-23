@@ -4,8 +4,8 @@
   "files": [
     {
       "lang": "zh",
-      "bytes": 6744793,
-      "sha256": "bc5eeb3a4b037e46498d3a78734d5aa1adf64d8a79e54ffcdfccfa8eb911e622",
+      "bytes": 6734070,
+      "sha256": "4d1024a68ef36a1823b6413d3d7b8b85a14ee502cf8687ad2838c8438d544ef0",
       "mean_volume_db": -20.1,
       "peak_db": -2.1,
       "full_decode": "passed",
@@ -16,8 +16,8 @@
     },
     {
       "lang": "en",
-      "bytes": 6721309,
-      "sha256": "7372ef069cda7c4dfe3e455b093b8fc53b5909d43e895eadcdca32349c77bfd5",
+      "bytes": 6715890,
+      "sha256": "c0fc5383e3eb7bd68d6886c81890ee41d8043004d1e623c86f06dbf950693eab",
       "mean_volume_db": -22.1,
       "peak_db": -1.2,
       "full_decode": "passed",

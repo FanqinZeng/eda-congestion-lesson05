@@ -38,5 +38,6 @@ replacements={
 for name in ['workspace.mjs','index.html','workspace.css']:
     text=(BASE/'site/python'/name).read_text()
     for a,b in replacements.items():text=text.replace(a,b)
+    if name=='workspace.mjs':text+='\nwindow.addEventListener("pageshow",event=>{if(event.persisted){pendingRun=false;launch()}});\n'
     (ROOT/'site/python'/name).write_text(text)
 print('Built real CPython examples and localized workspace')

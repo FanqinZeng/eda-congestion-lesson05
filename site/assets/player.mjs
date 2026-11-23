@@ -46,9 +46,13 @@ export async function initLessonPlayer(root=document){
   },{once:true});
   video.src=versions[lang].video;video.load();
  }
+ function initializeVoice(lang){
+  active=lang;select.value=lang;video.preload='none';video.src=versions[lang].video;video.poster=versions[lang].poster;video.dataset.language=lang;
+  resources(lang);applyCaption(lang);status.textContent=tr('当前配音：','Current voice: ')+versions[lang].label+' · '+versions[lang].voice;
+ }
  try{
   const r=await fetch('media/versions.json');if(!r.ok)throw Error('versions');versions=await r.json();
-  resources('zh');applyCaption('zh');video.dataset.language='zh';status.textContent=tr('当前配音：','Current voice: ')+`中文 · ${versions.zh.voice}`;select.disabled=false;
+  initializeVoice(root.documentElement.lang.startsWith('en')?'en':'zh');select.disabled=false;
   select.onchange=e=>switchVoice(e.target.value);
   if(captionSelect)captionSelect.onchange=e=>{captionChoice=e.target.value;applyCaption(pending?.lang||active);resources(pending?.lang||active);if(pending)pending.captionMode=captionChoice==='off'?'disabled':'showing';};
   // Interface changes select the matching rendered film, including its pictures.
@@ -56,6 +60,5 @@ export async function initLessonPlayer(root=document){
   root.addEventListener('lessonlanguagechange',e=>{
    const lang=e.detail.language;if(versions[lang]&&lang!==(pending?.lang||active))switchVoice(lang);else{resources(active);status.textContent=tr('当前配音：','Current voice: ')+versions[active].label;}
   });
-  if(root.documentElement.lang.startsWith('en'))switchVoice('en');
  }catch{status.textContent=tr('双语影片资料暂时无法载入。','Bilingual film metadata could not load.');}
 }

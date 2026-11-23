@@ -31,4 +31,8 @@ before帧保留于docs/qa/v1/；after帧和实际解码抽帧位于本地.qa/。
 - 手机不能通过隐藏章节或实验能力来换取无溢出；实际学习路径与桌面同样可完成。
 - 双语媒体用稳定语义id映射进度；资料时长和章节从真实时间轴生成，不硬编码旧课声明。
 
-冻结迁移版仍须完成当前完整文件的最终检查与独立审阅。源语义预检、skill计划试用和本次真实网页/成片迭代分别记录，避免混称。
+## 独立审阅后的单次修复与冻结
+
+整课独立审阅另实际复现了原始RUDY误用占用容量、英文首访提前下载影片、连续键盘焦点丢失、精确容量被拒，以及真实BFCache返回后Worker死亡。修复前后JSON记录在docs/qa/review-before.json、review-after.json、bfcache-before.json和bfcache-after.json。guided counterexample也改为选择其承诺的默认约定；复杂度说明计入bbox遍历与trace复制。所有修复均在一次修复阶段完成，没有请求二次审阅代替验证。
+
+当前真实浏览器完整路径、专项回归、实际媒体全解码/音量、10项Node、2项字体回归、45项资源与阅读页一致性均已通过；真实返回缓存由persisted事件和同一个window标记证明。最终v2.0.0已冻结于docs/skill-history/v2，五文件SHA256在v2.sha256.json。source预检、skill计划试用和真实网页/成片迭代分别记录，没有混称。完整人工听审与物理触屏仍未做。

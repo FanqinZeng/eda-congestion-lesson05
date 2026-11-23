@@ -81,7 +81,7 @@ The reference independently implements the same conventions. The exercise asks y
 
 ## Complexity and limits
 
-The implementation explicitly visits candidate cells, so time scales with the total visited cells across candidates. The demand matrix requires nx×ny space. Teaching traces retain additional intermediate data and are not a memory-optimized large-chip design.
+L-path deposition costs time proportional to the candidate-cell visits. This teaching implementation additionally enumerates each net’s bounding-box tiles for RUDY and copies the full nx×ny matrix per candidate to retain a trace. Total time therefore also includes those box visits and candidate-count times grid size; trace storage has that same extra factor. The demand matrix alone uses nx×ny space. This is not a memory-optimized large-chip design.
 
 There are no metal layers, vias, obstacles, shared trees, timing objectives or congestion detours. Equal candidate probability is an assumption, not an empirical routing distribution. Use the model for early placement feedback and validate with a more detailed router. A heat map is not proof of completed routing.
 

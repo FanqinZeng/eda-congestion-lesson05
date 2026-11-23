@@ -1,0 +1,12 @@
+{
+  "initial_english_has_no_mp4_request": false,
+  "initial_ready_state": 4,
+  "tab_moves_to_next_coordinate": false,
+  "selected_cell_keeps_keyboard_focus": false,
+  "exact_capacity_is_accepted": false,
+  "valid_capacity_clears_prior_error": false,
+  "raw_rudy_metric": "18 / 16",
+  "raw_rudy_suppresses_hotspots": false,
+  "raw_rudy_has_no_capacity_outline": false,
+  "status": "failed"
+}

@@ -64,7 +64,7 @@ def frame(t):
     if kind in ['rudy','units','source']:
         right=gold['rudyMatched'] if kind=='rudy' else gold['rudyRaw'] if kind=='units' else R['diagonal']['upstream']['demand'];left=matrix
         film.text(im,tr('L 路径占用','L-route occupancy'),125,260,32,TEAL);film.text(im,tr('等总量 RUDY','Matched-mass RUDY') if kind=='rudy' else tr('原始 HPWL 单位','Raw HPWL units') if kind=='units' else tr('上游按腿归一化','Upstream leg normalization'),1035,260,32,GOLD)
-        grid(im,left,x=130,y=322,u=104,routes=routes,progress=progress);grid(im,right,x=1040,y=322,u=104,routes=None,pins=False)
+        grid(im,left,x=130,y=322,u=104,routes=routes,progress=progress);grid(im,right,x=1040,y=322,u=104,routes=None,pins=False,cap=.6 if kind=='rudy' else float('inf'))
         film.text(im,'Σ D = 7',140,760,35,TEAL,True);film.text(im,'Σ D = '+n(sum(map(sum,right))),1050,760,35,GOLD,True)
         film.text(im,'7 / 16' if kind=='rudy' else '7 ≠ 18' if kind=='units' else '7 ≠ 2',650,455,62,IVORY,True)
         film.paragraph(im,tr('相同总量','Same mass') if kind=='rudy' else tr('不同单位','Different units'),665,560,290,29,MUTED)

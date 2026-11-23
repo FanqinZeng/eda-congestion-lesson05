@@ -7,8 +7,8 @@ for name in ['NotoSansSC-Regular.otf','JetBrainsMono-Regular.ttf','OFL-noto-sans
  src=BASE/'video/fonts'/name
  if src.exists():shutil.copy2(src,ROOT/'video/fonts'/name)
 shutil.copytree(BASE/'site/vendor/pyodide',ROOT/'site/vendor/pyodide',dirs_exist_ok=True)
-shutil.copy2(BASE/'site/assets/player.mjs',ROOT/'site/assets/player.mjs')
-shutil.copy2(BASE/'site/python/worker.mjs',ROOT/'site/python/worker.mjs')
+for rel in ['site/assets/player.mjs','site/python/worker.mjs']:
+ if not (ROOT/rel).exists():shutil.copy2(BASE/rel,ROOT/rel)
 shutil.copy2(BASE/'scripts/serve.py',ROOT/'scripts/serve.py')
 shutil.copy2(BASE/'requirements-media.txt',ROOT/'requirements-media.txt')
 shutil.copy2(BASE/'LICENSE',ROOT/'LICENSE')
