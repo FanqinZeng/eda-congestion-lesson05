@@ -38,3 +38,5 @@ before帧保留于docs/qa/v1/；after帧和实际解码抽帧位于本地.qa/。
 当前真实浏览器完整路径、专项回归、实际媒体全解码/音量、10项Node、2项字体回归、45项资源与阅读页一致性均已通过；真实返回缓存由persisted事件和同一个window标记证明。最终v2.0.0已冻结于docs/skill-history/v2，五文件SHA256在v2.sha256.json。source预检、skill计划试用和真实网页/成片迭代分别记录，没有混称。完整人工听审与物理触屏仍未做。
 
 迁移验收时另将既有v2焦点规则落实到答题提交：两课实际探针都发现反馈重绘后焦点回到BODY，已改为保留在对应提交按钮，before/after见docs/qa/quiz-focus-*.json。冻结skill的规则和散列均保持不变；这是既有规则下的必要产品回归修复。
+
+迁移整课审阅补充暴露了生成器隐含依赖兄弟仓库，以及无效输入被语言重绘覆盖后仍残留错误诊断。第一课同步用实际独立临时目录/浏览器重现并修复：生成器只更新本课exercise/examples，保留已经提交且验收过的Workspace；恢复有效坐标或容量时一并清除失效诊断。before/after在generator-*.json、validation-language-*.json，发布工作流加入生成后git diff检查。冻结v2不变。

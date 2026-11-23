@@ -6,6 +6,7 @@
     "invalid capacity preserves last valid state and reset recovers",
     "keyboard pin movement changes computed demand",
     "English interface retains experimental state",
+    "restored valid coordinates clear stale language diagnostics",
     "pointer coordinates respect actual SVG transform",
     "same-cell, compatibility and pinned teacher presets compute live",
     "only correct submitted answers persist and clear",

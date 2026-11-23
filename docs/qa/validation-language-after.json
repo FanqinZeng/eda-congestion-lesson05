@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": {
+    "replaced_valid_input_clears_diagnostic": true
+  },
+  "details": {
+    "invalid": {
+      "value": "1",
+      "aria_invalid": null,
+      "message": ""
+    }
+  }
+}

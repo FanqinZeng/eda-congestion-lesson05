@@ -35,7 +35,7 @@ function renderLab(){
  $('inspect').textContent='GCell ('+i+', '+j+') · L='+fmt(v)+' · RUDY='+fmt(w)+' · C='+fmt(state.capacity)+' · '+t('L拥塞比','L congestion')+'='+fmt(v/state.capacity)+' · '+t('L溢出','L overflow')+'='+fmt(Math.max(0,v-state.capacity));
  const pinKey=Object.keys(state.data.placement).join('|');
  if($('coordinates').dataset.pins!==pinKey){$('coordinates').dataset.pins=pinKey;$('coordinates').innerHTML='<table><thead><tr><th>Pin</th><th>x</th><th>y</th><th>GCell</th></tr></thead><tbody>'+Object.entries(state.data.placement).map(([id,p])=>'<tr><th>'+esc(id)+'</th>'+['x','y'].map(axis=>'<td><input type="number" min="0" max="'+state.data.chip[axis==='x'?'W':'H']+'" step="any" value="'+p[axis]+'" data-id="'+esc(id)+'" data-axis="'+axis+'" aria-label="'+esc(id)+' '+axis+'"></td>').join('')+'<td data-gcell="'+esc(id)+'"></td></tr>').join('')+'</tbody></table>';}
- for(const input of $('coordinates').querySelectorAll('input'))input.value=state.data.placement[input.dataset.id][input.dataset.axis];
+ for(const input of $('coordinates').querySelectorAll('input')){input.value=state.data.placement[input.dataset.id][input.dataset.axis];input.removeAttribute('aria-invalid');}$('capacity').value=state.capacity;$('capacity').removeAttribute('aria-invalid');$('input-status').textContent='';
  for(const node of $('coordinates').querySelectorAll('[data-gcell]')){const p=state.data.placement[node.dataset.gcell];node.textContent='('+Math.min(r.nx-1,Math.floor(p.x/state.data.gcell.cellW))+','+Math.min(r.ny-1,Math.floor(p.y/state.data.gcell.cellH))+')';}
  const isolated=zeros(r.nx,r.ny);for(const d of current.deposits)isolated[d.i][d.j]+=d.value;
  $('trace-grid').innerHTML=svg(isolated,{routes:[current],max:Math.max(1,...isolated.flat())});

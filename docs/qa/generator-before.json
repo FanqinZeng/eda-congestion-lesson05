@@ -1,0 +1,8 @@
+{
+  "status": "failed",
+  "checks": {
+    "isolated_generator_succeeds": false,
+    "committed_workspace_is_preserved": true
+  },
+  "stderr": " \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1256, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/hf/hkw24p4n3r3gj1_kpbrxrd0h0000gn/T/standalone-course-gt6vidac/eda-placement-lesson3/site/python/workspace.mjs'\n"
+}

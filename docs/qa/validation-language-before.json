@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "checks": {
+    "replaced_valid_input_clears_diagnostic": false
+  },
+  "details": {
+    "invalid": {
+      "value": "1",
+      "aria_invalid": "true",
+      "message": "The coordinate is invalid or outside the chip; results were retained."
+    }
+  }
+}

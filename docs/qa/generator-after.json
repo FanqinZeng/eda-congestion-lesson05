@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "checks": {
+    "isolated_generator_succeeds": true,
+    "committed_workspace_is_preserved": true
+  },
+  "stderr": ""
+}
