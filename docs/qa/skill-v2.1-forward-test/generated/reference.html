@@ -1,0 +1,29 @@
+<!doctype html><meta charset="utf-8"><title>Python · Mini Placement</title><h1>Python · Mini Placement</h1><pre>&quot;&quot;&quot;Exact rational reference. Place two lower-left 1 by 2 cells.&quot;&quot;&quot;
+from fractions import Fraction as Q
+
+
+def geometry(a, b):
+    def box(p):
+        x, y = map(Q, p)
+        return ((x, x + 1), (y, y + 2))
+
+    def shared(i, j):
+        return max(Q(0), min(i[1], j[1]) - max(i[0], j[0]))
+
+    ax, ay = box(a)
+    bx, by = box(b)
+    area = shared(ax, bx) * shared(ay, by)
+    cells = []
+    for pos in (a, b):
+        x, y = map(Q, pos)
+        row = min((0, 2, 4), key=lambda r: abs(y - r))
+        aligned = max(abs(x - round(x)), abs(y - row)) &lt;= Q(&quot;1e-9&quot;)
+        cells.append(dict(row=str(row), aligned=aligned, inside=0 &lt;= x &lt;= 7 and 0 &lt;= y &lt;= 4))
+    return area, cells
+
+
+if __name__ == &quot;__main__&quot;:
+    for x in (&quot;2&quot;, &quot;1.9999999995&quot;, &quot;2.0000000005&quot;):
+        area, _ = geometry((&quot;1&quot;, &quot;0&quot;), (x, &quot;0&quot;))
+        print(x, area, area &gt; 0)
+</pre>

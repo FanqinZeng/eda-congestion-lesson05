@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini Placement</title>
+<style>
+*{box-sizing:border-box}body{font:1rem system-ui,sans-serif;color:#153d3f;background:#faf8f1;max-width:43rem;margin:3vh auto;padding:1rem}h1{margin:.6em 0}label{display:inline-block;margin:.25rem}input{font:inherit;width:7em}button{font:inherit}input[aria-invalid=true]{outline:2px dashed #a21e31}svg{display:block;width:100%;border:1px solid #164d51;background:#edf3ec;touch-action:none}g[tabindex]{cursor:grab}g:focus rect{stroke:#15202a;stroke-width:3px}svg text{pointer-events:none;fill:white}output{display:block;margin:.4rem 0}footer{margin:1rem 0}p{line-height:1.4}
+</style>
+<button id="lang"></button><h1 id="title"></h1><p id="hint"></p><div id="inputs"></div>
+<output id="feedback" aria-live="polite"></output><button id="reset"></button>
+<svg id="board" viewBox="-100 -200 650 600" aria-labelledby="title">
+<rect x="0" y="0" width="400" height="300" fill="#d5e6dc"/>
+<path d="M0 100H400 M0 200H400" fill="none" stroke="#7a9e91" stroke-dasharray="5 4"/>
+<g id="A" tabindex="0" role="button" aria-label="A"><rect width="50" height="100" fill="#186763"/><text x="18" y="52">A</text></g>
+<g id="B" tabindex="0" role="button" aria-label="B"><rect width="50" height="100" fill="#94502f"/><text x="18" y="52">B</text></g>
+</svg>
+<output id="result"></output><form id="form"><label><span id="question"></span> <input inputmode="decimal" id="answer"></label><button id="submit"></button></form><output id="quiz" aria-live="polite"></output>
+<footer><a id="reading" href="generated/reference.html"></a> · <a id="example" href="generated/example.py" download></a></footer>
+<script src="model.js"></script><script src="ui.js"></script></html>

@@ -4,6 +4,8 @@
 
 公开入口：[课程主页](https://fanqinzeng.github.io/eda-congestion-lesson05/)。实际部署与验收状态以 [PROGRESS.md](PROGRESS.md) 的实际部署记录为准。
 
+当前可复用skill已更新为 [v2.1.0](skills/eda-lesson-studio/SKILL.md)，吸收合法化课验收问题，并加入制作前置检查。已发布课程原来消费的版本及散列继续保留；后续新课使用最新版，具体更新见 [版本说明](docs/skill-update-v2.1.md)。
+
 ## 课程
 
 - 全站中文 / English，语言切换保留实验；影片画面和旁白默认跟随界面语言。
